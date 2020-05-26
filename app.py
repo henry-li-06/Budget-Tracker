@@ -16,11 +16,13 @@ class User(db.Model):
         return '<User %r>' % self.username
 
 # Can change the name of this table 
+# add more columns based on what we need to track
 class Expense(db.Model): 
     id = db.Column(db.Integer, primary_key = True)
+    price = db.Column() # A column that tracks the price
+    category = db.Column() # The type of the expense
+    # payment_frequency = db.Column()
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
-    
-    # add more columns based on what we need to track
 
     def __repr__(self):
         pass
