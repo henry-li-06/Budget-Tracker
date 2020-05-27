@@ -37,7 +37,28 @@ def add_user():
     """
     Method for adding a new user
     """
+    # probably should check a lot of stuff in the frontend 
+    # i think you're supposed to check in both places though
     pass
+
+# TODO
+# not really sure about this app route decorator
+# @app.route('/<string:username>', methods = ["POST"])
+def login(): # need to get username and password from HTML form 
+    """
+    Method for logining in user
+    """
+
+    # find the record in Users table that matches the username
+        # if the record is empty then display an error
+    # check that the password matches the hashed password 
+        # if matches redirect to dashboard
+        # else redirect to login page again 
+    
+    # redirects user to their dashboard page
+    # redirect('') 
+    pass
+    
 
 
 if(__name__ == '__main__'):
