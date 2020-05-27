@@ -1,16 +1,18 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask.ext.bcrypt import Bcrypt
+#from flask.ext.bcrypt import Bcrypt
 
 app = Flask(__name__)
-bcrypt = Bcrypt(app)
+#bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String, nullable = False)
     username = db.Column(db.String(15), nullable = False)
     password = db.Column(db.String, nullable = False)
+    email = db.Column(db.String) #probably should check if this is a valid email
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -37,6 +39,26 @@ def add_user():
     """
     Method for adding a new user
     """
+    # TODO: add the name of the form inputs
+    if(request.method == 'POST'):
+        username = request.form[____]
+        password = bcrypt.generate_password_hash(request.form[____])
+        name = request.form[____]
+        email = request.form[_____]
+        if(# Username doesn't exist): # TODO
+            new_user = User(name = name, email = email, username = username, password = password)
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                return redirect() # TODO
+            catch:
+                return redirect() # TODO
+        else:
+            return redirect() # TODO
+    else:
+        return redirect() # TODO
+
+
     # probably should check a lot of stuff in the frontend 
     # i think you're supposed to check in both places though
     pass
@@ -46,18 +68,18 @@ def add_user():
 # @app.route('/<string:username>', methods = ["POST"])
 def login(): # need to get username and password from HTML form 
     """
-    Method for logining in user
+    Action for logging user in
     """
 
-    # find the record in Users table that matches the username
-        # if the record is empty then display an error
-    # check that the password matches the hashed password 
-        # if matches redirect to dashboard
-        # else redirect to login page again 
-    
-    # redirects user to their dashboard page
-    # redirect('') 
-    pass
+    if(request.method == 'POST'):
+        username = request.form[____] # TODO: Add form input name
+        passworld = request.form[___] # TODO: Add form input name
+        user = Todo.query.filter_by(username=username).first()
+        if(bcrypt.check_password_hash(user.password, password)):
+            return redirect() # TODO
+        else:
+            return redirect() # TODO
+    return redirect() # TODO
     
 
 
