@@ -1,16 +1,23 @@
+import os
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-#from flask.ext.bcrypt import Bcrypt
+from flask.ext.bcrypt import Bcrypt
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
 
 app = Flask(__name__)
 #bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SECRET_KEY'] = os.urandom(16) #! not sure if this secret key needs to be changed
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-class User(db.Model):
+
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String, nullable = False)
-    username = db.Column(db.String(15), nullable = False)
+    username = db.Column(db.String(15), nullable = False, unique = True)
     password = db.Column(db.String, nullable = False)
     email = db.Column(db.String) #probably should check if this is a valid email
 
@@ -28,6 +35,10 @@ class Expense(db.Model):
 
     def __repr__(self):
         pass
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 @app.route('/')
@@ -70,17 +81,24 @@ def login(): # need to get username and password from HTML form
     """
     Action for logging user in
     """
-
     if(request.method == 'POST'):
         username = request.form[____] # TODO: Add form input name
         passworld = request.form[___] # TODO: Add form input name
-        user = Todo.query.filter_by(username=username).first()
-        if(bcrypt.check_password_hash(user.password, password)):
-            return redirect() # TODO
-        else:
-            return redirect() # TODO
+        user = Todo.query.filter_by(username=username)
+        if(# a user exists):
+            if(bcrypt.check_password_hash(user.password, password)):
+                # create a session cookie thing 
+                login_user(user)
+                return redirect() # TODO
+            else:
+                return redirect() # TODO
     return redirect() # TODO
-    
+
+# @app.route('', method = ["POST"])
+# @login_required
+def logout():
+    logout_user()
+    return redirect() # TODO 
 
 
 if(__name__ == '__main__'):
