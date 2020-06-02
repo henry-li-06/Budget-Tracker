@@ -1,12 +1,12 @@
 import os
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-# from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 app = Flask(__name__)
-#bcrypt = Bcrypt(app)
+bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = os.urandom(16) 
 db = SQLAlchemy(app)
@@ -47,9 +47,36 @@ def load_user(user_id):
 
 
 # *** Following methods handle page routes ***
-@app.route('/')
+@app.route('/', methods = ['POST', 'GET'])
 def index():
-    return render_template('index.html')
+    if(request.method == 'POST'):
+        if(request.form['request_type'] == 'create_account'):
+            username = request.form['username']
+            password = request.form['password']
+            if(username != '' and password != ''):
+                new_user = User(username = username, password = bcrypt.generate_password_hash(password))
+                try:
+                    db.session.add(new_user)
+                    db.session.commit()
+                    return redirect('/')
+                except: 
+                    return '<h1>This was an issue</h1>'
+            else:
+                return redirect('/')
+        elif(request.form['request_type'] == 'login'):
+            username = request.form['username']
+            password = request.form['password']
+            user = User.query.filter_by(username = username)[0]
+            hashed_password = user.password
+            if(bcrypt.check_password_hash(hashed_password, password)):
+                login_user(user, remember = True)
+                return redirect('/')
+
+    elif(current_user.is_authenticated):
+        return 'wow this is crazy'
+    else:
+        users = User.query.all()
+        return render_template('index.html', users = users)
 
 # @app.route('/', methods = ["POST"])
 # def add_user():

@@ -6,4 +6,38 @@
 
 {% block body %}
 <h1>This sht better work</h1>
+
+<form action = '/' method = 'POST'>
+
+    <label for = 'username'>Username:</label>
+    <input type = 'text' name = 'username' />
+
+    <label for = 'password'>Password:</label>
+    <input type = 'password' name = 'password' />
+
+    <input type = 'hidden' name = 'request_type' value = 'create_account' />
+
+    <input type = 'submit' value = 'Log In' />
+
+</form>
+
+<form action = '/' method = 'POST'>
+    <label for = 'username'>Username:</label>
+    <input type = 'text' name = 'username' />
+
+    <label for = 'password'>Password:</label>
+    <input type = 'password' name = 'password' />
+
+    <input type = 'hidden' name = 'request_type' value = 'login' />
+
+    <input type = 'submit' value = 'Create Account' />
+</form>
+
+
+
+{% for user in users %}
+
+<p>{{ user.username }}</p>
+
+{% endfor %}
 {% endblock %}
