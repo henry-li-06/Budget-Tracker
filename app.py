@@ -3,16 +3,22 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from datetime import timedelta
 
 
 app = Flask(__name__)
+
 bcrypt = Bcrypt(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = os.urandom(16) 
+app.config['SECRET_KEY'] = os.urandom(16) 
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 login_manager = LoginManager()
 login_manager.init_app(app)
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(minutes = 60)
 
 # *** Classes for Database Tables ***
 class User(db.Model, UserMixin):
@@ -45,7 +51,6 @@ class Expense(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 # *** Following methods handle page routes ***
 @app.route('/', methods = ['POST', 'GET'])
 def index():
@@ -66,17 +71,26 @@ def index():
         elif(request.form['request_type'] == 'login'):
             username = request.form['username']
             password = request.form['password']
-            user = User.query.filter_by(username = username)[0]
+            user = User.query.filter_by(username = username).first()
             hashed_password = user.password
             if(bcrypt.check_password_hash(hashed_password, password)):
                 login_user(user, remember = True)
                 return redirect('/')
 
     elif(current_user.is_authenticated):
-        return 'wow this is crazy'
+        user_id = current_user.id
+        user_expenses = Expense.query.filter_by(user_id = user_id).all()
+        return render_template('index.html', expenses = user_expenses)
     else:
         users = User.query.all()
         return render_template('index.html', users = users)
+
+@app.route('/logout', methods = ['POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')
+
 
 # @app.route('/', methods = ["POST"])
 # def add_user():

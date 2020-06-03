@@ -17,7 +17,7 @@
 
     <input type = 'hidden' name = 'request_type' value = 'create_account' />
 
-    <input type = 'submit' value = 'Log In' />
+    <input type = 'submit' value = 'Create Account' />
 
 </form>
 
@@ -30,7 +30,11 @@
 
     <input type = 'hidden' name = 'request_type' value = 'login' />
 
-    <input type = 'submit' value = 'Create Account' />
+    <input type = 'submit' value = 'Login' />
+</form>
+
+<form method = 'POST' action = '/logout'>
+    <input type = 'submit' value = 'Logout'>
 </form>
 
 
@@ -40,4 +44,24 @@
 <p>{{ user.username }}</p>
 
 {% endfor %}
+
+{% if expenses %}
+
+<table>
+    <tr>
+        <td>Price</td>
+        <td>Description</td>
+    </tr>
+    {% for expense in expenses %}
+
+    <tr>
+        <td>{{ expense.price }}</td>
+        <td>{{ expense.description }}</td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+{% endif %}
+
 {% endblock %}
