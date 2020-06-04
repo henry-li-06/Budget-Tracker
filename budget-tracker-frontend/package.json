@@ -1,5 +1,5 @@
 {
-  "name": "budget-tracker",
+  "name": "budget-tracker-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
