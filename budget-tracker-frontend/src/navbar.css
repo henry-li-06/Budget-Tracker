@@ -1,0 +1,24 @@
+#navbar{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+
+#navbar ul{
+  list-style: none;
+}
+
+#navbar li{
+  display: inline;
+  padding: 50px;
+  font-size: 40px;
+}
+
+#heading{
+  margin: 50px;
+}
+
+.right{
+  right: 10px;
+}
+
