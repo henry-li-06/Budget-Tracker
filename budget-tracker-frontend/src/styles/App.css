@@ -59,7 +59,7 @@
     rgba(0,0,0,0.5),
     rgba(0,0,0,0.5)
   ),
-  url(./budget-image.png);
+  url(./../images/budget-image.png);
   min-height: 900px;
   min-width: 500px;
   text-align: center;
@@ -80,7 +80,7 @@
     rgba(0,0,0,0.5),
     rgba(0,0,0,0.5)
   ),
-  url(./feature-1.jpg);
+  url(./../images/feature-1.jpg);
   min-height: 900px;
   min-width: 500px;
   text-align: center;
