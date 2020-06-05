@@ -11,14 +11,13 @@
 #navbar li{
   display: inline;
   padding: 50px;
-  font-size: 40px;
 }
 
 #heading{
   margin: 50px;
 }
 
-.right{
-  right: 10px;
+.link{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 30px;
 }
-
