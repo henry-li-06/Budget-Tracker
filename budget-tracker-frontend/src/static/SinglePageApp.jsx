@@ -18,18 +18,15 @@ class SinglePageApp extends React.Component {
     return (
       <HashRouter>
         <div className="App">
-
-
           <header className="header">
             <div className="container">
               <section id="navbar">
-                <ul>
+                <ul id="list">
                   <li id="heading">Budget Tracker V1</li>
                   <li className="link"><NavLink exact to='/'>Home</NavLink></li>
                   <li className="link"><NavLink to='/about'>About</NavLink></li>
                   <li className="link"><NavLink to='/login'>Log in</NavLink></li>
                   <li className="link"><NavLink to='/signup'>Sign up</NavLink></li>
-
                 </ul>
               </section>
             </div>
