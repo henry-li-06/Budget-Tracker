@@ -19,3 +19,9 @@ class Expense(db.Model):
     # category = db.Column() # The type of the expense
     # payment_frequency = db.Column()
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class RefreshToken(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    user_public_id = db.Column(db.String, nullable = False, unique = True)
+    is_valid = db.Column(db.Boolean, default = True)
+    expiration_date = db.Column(db.DateTime)
