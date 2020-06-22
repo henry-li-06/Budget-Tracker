@@ -13,8 +13,8 @@ def token_required(f):
         access_token = request.cookies.get('x-access-token')
         if(access_token):
             try:
-                data = jwt.decode(access_token. app.config['SECRET_KEY'])
-                current_user = User.query.filter_by(public_id = data['public_id'])
+                data = jwt.decode(access_token, app.config['SECRET_KEY'])
+                current_user = User.query.filter_by(public_id = data['public_id']).first()
             except:
                 return { 'message' : 'Access token is invalid!' }, 401
         else:
@@ -96,6 +96,7 @@ def login():
 @app.route('/user/expenses/all', methods = ['GET'])
 @token_required
 def get_all_expenses(current_user):
+    # return { 'cookies' : str(request.cookies) }
     expense_list = Expense.query.filter_by(user_id = current_user.id).all()
     expenses = []
 
@@ -113,11 +114,12 @@ def get_all_expenses(current_user):
 @app.route('/user/expenses/new', methods = ['POST'])
 @token_required
 def new_expense(current_user):
-    data = request.get_json()
+    data = request.get_json(force = True)
+    # return { 'request' : str(data)}
 
-    price = data['price']
+    price = int(data['price'])
     description = data['description']
-    date = data['date']
+    date = datetime.strptime(data['date'], '%Y-%m-%d')
     user_id = current_user.id
 
     try:
@@ -163,6 +165,3 @@ def add_cors_headers(response):
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, DELETE'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
-
-
-        
