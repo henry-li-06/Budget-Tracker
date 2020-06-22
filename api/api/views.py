@@ -36,7 +36,7 @@ def new_user():
     email = data['email']
     
     if(True): # TODO: Check for valid login information
-        hashed_password = bcrypt.generate_hashed_password(password)
+        hashed_password = bcrypt.generate_password_hash(password)
         new_user = User(first_name = first_name, last_name = last_name, username = username, \
             password = hashed_password, email = email, public_id = str(uuid4()))
         try:
@@ -54,7 +54,7 @@ def login():
     auth = request.authorization
 
     if(auth and auth.username and auth.password):
-        user = User.query.filter_by(username = username).first()
+        user = User.query.filter_by(username = auth.username).first()
 
         if(user and bcrypt.check_password_hash(user.password, auth.password)):
 
@@ -72,7 +72,7 @@ def login():
             res.set_cookie('x-access-token', value = access_token.decode('UTF-8'), httponly = True, samesite = \
                 None, expires = datetime.utcnow() + timedelta(minutes = 30))
             res.set_cookie('x-refresh-token', value = refresh_token.decode('UTF-8'), httponly = True, samesite = \
-                None, expires = datetime.utcnow() + timdelta(weeks = 2), path = '/user/login/refresh')
+                None, expires = datetime.utcnow() + timedelta(weeks = 2), path = '/user/login/refresh')
 
             db_refresh_token = RefreshToken.query.filter_by(user_public_id = user.public_id).first()
             if(db_refresh_token):
