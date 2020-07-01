@@ -17,7 +17,7 @@ def token_required(f):
             else:
                 return { 'message' : 'Access token is invalid!' }, 401
         else:
-            return { 'message' : 'Accescs token is missing!' }, 401
+            return { 'message' : 'Access token is missing!' }, 401
 
         return f(current_user, *args, **kwargs)
 

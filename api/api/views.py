@@ -19,7 +19,6 @@ def new_user(data):
     password = data['password']
     email = data['email']
     
-    
     hashed_password = bcrypt.generate_password_hash(password)
     new_user = User(first_name = first_name, last_name = last_name, username = username, \
         password = hashed_password, email = email, public_id = str(uuid4()))
@@ -31,8 +30,6 @@ def new_user(data):
         return { 'message' : 'There was an issue creating a new user!' }
 
     
-
-
 @app.route('/user/login', methods = ['POST'])
 def login():
     auth = request.authorization
@@ -93,7 +90,7 @@ def new_expense(current_user):
             user_id = user_id)
         db.session.add(new_expense)
         db.session.commit()
-        return { 'message' : 'New expense created!' }, 200
+        return { 'message' : 'New expense created!' }, 201
     except:
         return { 'message' : 'There was an issue creating a new expense!' }
 
