@@ -11,9 +11,7 @@ import Login from "./Login.jsx";
 import Signup from "./Signup.jsx"
 
 class SinglePageApp extends React.Component {
-  state = {
-    page: 'home'
-  }
+
   render() {
     return (
       <HashRouter>
