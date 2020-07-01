@@ -4,19 +4,21 @@ import './../styles/about.css';
 class About extends React.Component {
   render() {
     return (
-      <div className='container'>
-        <section id='graphic'>
-        </section>
-        <section id='text'>
-          <h1 id='heading'>Never forget a subscription again.</h1>
-          <p id='paragraph'>Simplify the way you manage your subscriptions.</p>
-          <p>Input monthly subscriptions.</p>
-          <p>Enter a budget.</p>
-          <p>Display renewal dates.</p>
-          <p>Keep track of monthly expenses.</p>
+      <div>
+        <h1 id='heading'>Never forget a subscription again.</h1>
+        <div className='container'>
+          <section id='graphic'>
+          </section>
+          <section id='text'>
 
-        </section>
+            <p className='paragraph'>Simplify the way you manage your subscriptions.</p>
+            <p className='paragraph'>Input monthly subscriptions.</p>
+            <p className='paragraph'>Enter a budget.</p>
+            <p className='paragraph'>Display renewal dates.</p>
+            <p className='paragraph'>Keep track of monthly expenses.</p>
 
+          </section>
+        </div>
       </div>
     )
 

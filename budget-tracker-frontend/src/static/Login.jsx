@@ -1,9 +1,12 @@
 import React from 'react';
+import BudgetManager from './BudgetManager.jsx';
 
 class Login extends React.Component {
   render() {
     return (
-      <p>THis is the login page</p>
+      <div>
+        <BudgetManager />
+      </div>
     )
   }
 }
