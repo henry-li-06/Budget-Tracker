@@ -2,25 +2,7 @@ import React from 'react';
 import './../styles/dashboard.css';
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      totalSpending: 0,
-      totalSubs: 0,
-      highestCat: "None"
-    }
-
-  }
-
-
-
   render() {
-
-
-
-
-
 
     return (
 
@@ -31,11 +13,11 @@ class Dashboard extends React.Component {
         </div>
         <div className="dashItem">
           Subscriptions monthly total
-          <div>${this.state.totalSubs}</div>
+          <div>${this.props.totalSubCost}</div>
         </div>
         <div className="dashItem">
           Greatest Category
-          <div>{this.state.highestCat}</div>
+          <div>None</div>
         </div>
       </div>
     )
