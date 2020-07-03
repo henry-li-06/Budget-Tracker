@@ -67,7 +67,7 @@ def get_all_expenses(current_user):
         expense_info = {
             'description' : expense.description,
             'price' : expense.price,
-            'date' : expense.date, #! have to make sure this is a datetime
+            'date' : expense.date, 
             'user_id' : expense.user_id
         }
         expenses.append(expense_info)
