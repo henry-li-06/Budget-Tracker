@@ -1,14 +1,17 @@
 function createExpense() {
     event.preventDefault();
 
-    const description = document.getElementById('description').value
+    const title = document.getElementById('title').value
     const price = document.getElementById('price').value
     const date = document.getElementById('date').value
+    const category = document.getElementById('category').value
 
     const data = {
-        'description' : description,
+        'title' : title,
         'price' : price,
-        'date' : date
+        'date' : date,
+        'category' : category
+
     }
 
     let headers = new Headers()
@@ -16,7 +19,7 @@ function createExpense() {
     headers.append('Accept', 'application/json');
     headers.append('Origin', 'http://127.0.0.1:3000');
 
-    fetch('http://127.0.0.1:5000/user/expenses/new', {
+    fetch('http://127.0.0.1:5000/user/budget/new', {
         mode : 'cors',
         method : 'POST',
         credentials : 'include',

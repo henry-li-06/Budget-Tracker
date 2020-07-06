@@ -7,14 +7,24 @@
 </head>
 <body>
     <form id = 'expense-form'>
-        <label for = 'description'>Description:</label>
-        <input type = 'text' id = 'description' />
+        <label for = 'title'>Description:</label>
+        <input type = 'text' id = 'title' />
 
         <label for = 'price'>Price:</label>
         <input type = 'text' id = 'price' />
 
         <label for = 'date'>Date:</label>
         <input type = 'date' id = 'date' />
+
+        <label for = 'category'>Category</label>
+        <select id = 'category'>
+            <option value = 'Subscriptions and Recurring Expenses'>Subscriptions and Recurring Expenses</option>
+            <option value = 'Food and Dining'>Food and Dining</option>
+            <option value = 'Housing and Utilites'>Housing and Utitilies</option>
+            <option value = 'Entertainment and Recreation'>Entertainmenet and Recreation</option>
+            <option value = 'Medical and Healthcare'>Medical and Healthcare</option>
+            <option value = 'Other'>Other</option>
+        </select>
 
         <input type = 'submit' />
     </form>
