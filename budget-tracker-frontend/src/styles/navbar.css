@@ -1,0 +1,23 @@
+#navbar{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+
+#navbar ul{
+  list-style: none;
+}
+
+#navbar li{
+  display: inline;
+  padding: 50px;
+}
+
+#heading{
+  margin: 50px;
+}
+
+.link{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 30px;
+}
