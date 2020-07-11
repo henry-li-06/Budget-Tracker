@@ -15,7 +15,7 @@ class BudgetItem(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     price = db.Column(db.Integer) # A column that tracks the price
     title = db.Column(db.String)
-    date = db.Column(db.DateTime, nullable = False)
+    date = db.Column(db.DateTime)
     # category = db.Column() # The type of the expense
     # payment_frequency = db.Column()
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
