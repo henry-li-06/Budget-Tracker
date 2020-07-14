@@ -30,3 +30,4 @@ def validate_new_user(f):
 
         return f(data, *args, **kwargs)
     return decorator
+

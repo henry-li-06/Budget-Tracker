@@ -1,11 +1,12 @@
 from api import app, db, bcrypt
-from .models import User, Expense, RefreshToken
+from .models import User, BudgetItem, RefreshToken # , Category
 from api.utils.auth import *
 from api.utils import validate_new_user
 
 from flask import make_response, request
 from uuid import uuid4
 from datetime import datetime, timedelta
+
 
 # *** ENDPOINTS ***
 
@@ -26,7 +27,7 @@ def new_user(data):
         db.session.add(new_user)
         db.session.commit()
         return { 'message' : 'New user created!' }, 201
-     except:
+    except:
         return { 'message' : 'There was an issue creating a new user!' }
 
     
@@ -56,43 +57,53 @@ def login():
     return { 'message' : 'Invalid username or password!' }, 401
 
 
-@app.route('/user/expenses/all', methods = ['GET'])
+@app.route('/user/budget/all', methods = ['GET'])
 @token_required
-def get_all_expenses(current_user):
-    # return { 'cookies' : str(request.cookies) }
-    expense_list = Expense.query.filter_by(user_id = current_user.id).all()
-    expenses = []
+def get_all_budget_items(current_user):
 
-    for expense in expense_list:
-        expense_info = {
-            'description' : expense.description,
-            'price' : expense.price,
-            'date' : expense.date, #! have to make sure this is a datetime
-            'user_id' : expense.user_id
+    budget_item_list = BudgetItem.query.filter_by(user_id = current_user.id).all()
+    budget_items = {
+        'Subscriptions and Recurring Expenses' : [],
+        'Food and Dining' : [],
+        'Housing and Utilies' : [],
+        'Entertainment and Recreation' : [],
+        'Medical and Healthcare' : [],
+        'Other' : []
+    }
+
+    for budget_item in budget_item_list:
+        budget_item_info = {
+            'title' : budget_item.title,
+            'price' : budget_item.price,
+            'date' : budget_item.date, 
+            'user_id' : budget_item.user_id
         }
-        expenses.append(expense_info)
-    return { 'expenses' : expenses }
+        budget_items[budget_item.category].append(budget_item_info)
 
+    return { 'budget_items' : budget_items }
 
-@app.route('/user/expenses/new', methods = ['POST'])
+@app.route('/user/budget/new', methods = ['POST'])
 @token_required
-def new_expense(current_user):
+def new_budget_item(current_user):
     data = request.get_json(force = True)
-    # return { 'request' : str(data)}
 
     price = int(data['price'])
-    description = data['description']
+    title = data['title']
+    category = data['category'] 
     date = datetime.strptime(data['date'], '%Y-%m-%d')
     user_id = current_user.id
 
+    if(not category in BudgetItem.categories):
+        return { 'message' : 'Invalid category!' }
+
     try:
-        new_expense = Expense(price = price, description = description, date = date, \
-            user_id = user_id)
-        db.session.add(new_expense)
+        new_budget_item = BudgetItem(price = price, title = title, category = category, \
+            user_id = user_id, date = date)
+        db.session.add(new_budget_item)
         db.session.commit()
-        return { 'message' : 'New expense created!' }, 201
+        return { 'message' : 'New budget item created!' }, 201
     except:
-        return { 'message' : 'There was an issue creating a new expense!' }
+        return { 'message' : 'There was an issue creating a new budget item!' }
 
 
 @app.route('/user/login/refresh', methods = ['GET'])
