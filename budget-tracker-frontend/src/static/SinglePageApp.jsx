@@ -26,7 +26,7 @@ class SinglePageApp extends React.Component {
                   <li className="link"><NavLink to='/about'>About</NavLink></li>
                   <li className="link"><NavLink to='/login'>Log in</NavLink></li>
                   <li className="link"><NavLink to='/signup'>Sign up</NavLink></li>
-                  <li className="link"><NavLink to='/tracker'>Budget Tracker</NavLink></li>
+                  {/* <li className="link"><NavLink to='/tracker'>Budget Tracker</NavLink></li> */}
                 </ul>
               </section>
             </div>

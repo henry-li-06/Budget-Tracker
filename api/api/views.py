@@ -28,7 +28,7 @@ def new_user(data):
         db.session.commit()
         return { 'message' : 'New user created!' }, 201
     except:
-        return { 'message' : 'There was an issue creating a new user!' }
+        return { 'message' : 'There was an issue creating a new user!' }, 400
 
     
 @app.route('/user/login', methods = ['POST'])
