@@ -1,5 +1,4 @@
 import React from 'react';
-import Dashboard from './Dashboard.jsx';
 import BudgetLists from './BudgetLists.jsx';
 
 
