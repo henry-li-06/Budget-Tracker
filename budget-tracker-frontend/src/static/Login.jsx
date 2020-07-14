@@ -41,7 +41,7 @@ class Login extends React.Component {
     )
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
 
     let headers = new Headers();
@@ -50,19 +50,14 @@ class Login extends React.Component {
     headers.append('Origin', 'http://127.0.0.1:3000');
     headers.append('Authorization', 'Basic ' + btoa(this.state.username + ':' + this.state.password));
     
-
-    var httpStatus;
-    fetch('http://127.0.0.1:5000/user/login', {
+    let response = await fetch('http://127.0.0.1:5000/user/login', {
         mode : 'cors',
         method : 'POST',
         headers: headers,
         credentials : 'include'
     })
-    .then(response => httpStatus = response.status)
+    if(response.status === 200) this.setState({ isValidLogin : true })
 
-    if(httpStatus === 200) {
-      this.setState({ isValidLogin : true })
-    }
   }
   
   handleChange() {

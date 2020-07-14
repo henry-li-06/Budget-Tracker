@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 class Signup extends React.Component {
 
@@ -14,10 +15,18 @@ class Signup extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    
   }
 
   render() {
+    if(this.state.isValidNewUser) {
+      return (
+        <Redirect to = {{
+          pathname : '/tracker'
+        }}
+        />
+      )
+    }
+
     return (
       <div className = "container"> 
       <form>
@@ -47,7 +56,7 @@ class Signup extends React.Component {
     })
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
 
     const data = {
@@ -64,17 +73,13 @@ class Signup extends React.Component {
     headers.append('Origin', 'http://127.0.0.1:3000');
 
     var httpStatus;
-    fetch('http://127.0.0.1:5000/user/new', {
+    let response = await fetch('http://127.0.0.1:5000/user/new', {
         mode : 'cors',
         method : 'POST',
         headers: headers,
         body : JSON.stringify(data)
     })
-    .then(response => httpStatus = response.status)
-
-    if(response.status === 201) {
-      this.setState({ isValidNewUser : true })
-    }
+    if(response.status === 201) this.setState({ isValidNewUser : true })
 
   }
 }

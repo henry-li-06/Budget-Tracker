@@ -37,13 +37,13 @@ class BudgetLists extends React.Component {
         category: this._inputCategory.value,
         key: Date.now()
       });
-      var totalCost = this.state.totalExpenses + parseInt(this._inputCost.value);
-      var subCost = this._inputCategory.value === "Subscriptions and Recurring Expenses" ? parseInt(this._inputCost.value) + parseInt(this.state.subExpenses) : parseInt(this.state.subExpenses);
-      var foodCost = this._inputCategory.value === "Food and Dining" ? parseInt(this._inputCost.value) + parseInt(this.state.foodExpenses) : parseInt(this.state.foodExpenses);
-      var housingCost = this._inputCategory.value === "Housing and Utilities" ? parseInt(this._inputCost.value) + parseInt(this.state.housingExpenses) : parseInt(this.state.housingExpenses);
-      var entertainCost = this._inputCategory.value === "Entertainment and Recreation" ? parseInt(this._inputCost.value) + parseInt(this.state.entertainExpenses) : parseInt(this.state.entertainExpenses);
-      var medicalCost = this._inputCategory.value === "Medical and Healthcare" ? parseInt(this._inputCost.value) + parseInt(this.state.medicalExpenses) : parseInt(this.state.medicalExpenses);
-      var otherCost = this._inputCategory.value === "Other" ? parseInt(this._inputCost.value) + parseInt(this.state.otherExpenses) : parseInt(this.state.otherExpenses);
+      var totalCost = this.state.totalExpenses + parseFloat(this._inputCost.value);
+      var subCost = this._inputCategory.value === "Subscriptions and Recurring Expenses" ? parseFloat(this._inputCost.value) + parseFloat(this.state.subExpenses) : parseFloat(this.state.subExpenses);
+      var foodCost = this._inputCategory.value === "Food and Dining" ? parseFloat(this._inputCost.value) + parseFloat(this.state.foodExpenses) : parseFloat(this.state.foodExpenses);
+      var housingCost = this._inputCategory.value === "Housing and Utilities" ? parseFloat(this._inputCost.value) + parseFloat(this.state.housingExpenses) : parseFloat(this.state.housingExpenses);
+      var entertainCost = this._inputCategory.value === "Entertainment and Recreation" ? parseFloat(this._inputCost.value) + parseFloat(this.state.entertainExpenses) : parseFloat(this.state.entertainExpenses);
+      var medicalCost = this._inputCategory.value === "Medical and Healthcare" ? parseFloat(this._inputCost.value) + parseFloat(this.state.medicalExpenses) : parseFloat(this.state.medicalExpenses);
+      var otherCost = this._inputCategory.value === "Other" ? parseFloat(this._inputCost.value) + parseFloat(this.state.otherExpenses) : parseFloat(this.state.otherExpenses);
       var greatestCat = totalCost === 0 ? "None" :
         (subCost >= foodCost && subCost >= housingCost && subCost >= entertainCost && subCost >= medicalCost && subCost >= otherCost ? "Subscriptions and Recurring Expenses" :
           (foodCost >= housingCost && foodCost >= entertainCost && foodCost >= medicalCost && foodCost >= otherCost ? "Food and Dining" :

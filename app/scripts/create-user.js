@@ -25,7 +25,7 @@ function newUser() {
         mode : 'cors',
         method : 'POST',
         headers: headers,
-        body : JSON.stringify(data),
+        body : JSON.stringify(data)
     })
     .then(response => response.json())
     .then(data => console.log(data))
