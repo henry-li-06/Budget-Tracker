@@ -17,7 +17,7 @@ class Dashboard extends React.Component {
         </div>
         <div className="dashItem">
           Greatest Category
-          <div>None</div>
+      <div id="greatestCatText">{this.props.greatestCategory}</div>
         </div>
       </div>
     )

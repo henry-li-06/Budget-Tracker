@@ -14,7 +14,7 @@ class BudgetItems extends React.Component {
       <div>
         <li className="ListItem" key={item.key}>
           <div><p className='itemName'>{item.name}</p></div>
-          <div><p className='itemCost'>{item.cost}</p></div>
+          <div><p className='itemCost'>${item.cost}</p></div>
           <div id="cancel"><p className="xtocancel" onClick={() => this.delete(item.key)}>X</p></div>
         </li>
       </div>

@@ -9,6 +9,7 @@ import {
 import About from "./About.jsx";
 import Login from "./Login.jsx";
 import Signup from "./Signup.jsx"
+import BudgetLists from './BudgetLists.jsx';
 
 class SinglePageApp extends React.Component {
 
@@ -25,6 +26,7 @@ class SinglePageApp extends React.Component {
                   <li className="link"><NavLink to='/about'>About</NavLink></li>
                   <li className="link"><NavLink to='/login'>Log in</NavLink></li>
                   <li className="link"><NavLink to='/signup'>Sign up</NavLink></li>
+                  <li className="link"><NavLink to='/tracker'>Budget Tracker</NavLink></li>
                 </ul>
               </section>
             </div>
@@ -34,6 +36,7 @@ class SinglePageApp extends React.Component {
             <Route path="/about" component={About} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path='/tracker' component={BudgetLists}></Route>
 
           </div>
 
