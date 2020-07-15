@@ -45,7 +45,7 @@ class BudgetLists extends React.Component {
     var itemArray = this.state.items;
     if (this._inputItem.value !== "" &&
       this._inputCost.value !== "" &&
-      this._inputCost.value > 0 &&
+      this._inputCost.value > 0.00 &&
       this._inputCategory.value !== "") {
       itemArray.unshift({
         name: this._inputItem.value,
@@ -53,7 +53,7 @@ class BudgetLists extends React.Component {
         category: this._inputCategory.value,
         key: Date.now()
       });
-      var totalCost = this.state.totalExpenses + parseFloat(this._inputCost.value);
+      var totalCost = parseFloat(this.state.totalExpenses) + parseFloat(this._inputCost.value);
       var subCost = this._inputCategory.value === "Subscriptions and Recurring Expenses" ? parseFloat(this._inputCost.value) + parseFloat(this.state.subExpenses) : parseFloat(this.state.subExpenses);
       var foodCost = this._inputCategory.value === "Food and Dining" ? parseFloat(this._inputCost.value) + parseFloat(this.state.foodExpenses) : parseFloat(this.state.foodExpenses);
       var housingCost = this._inputCategory.value === "Housing and Utilities" ? parseFloat(this._inputCost.value) + parseFloat(this.state.housingExpenses) : parseFloat(this.state.housingExpenses);
@@ -180,7 +180,7 @@ class BudgetLists extends React.Component {
               <label>Enter budget item:  </label>
               <input id="itemInput" ref={(a) => this._inputItem = a} placeholder="Enter Item">
               </input>
-              <input type="number" ref={(a) => this._inputCost = a} placeholder="Enter Amount">
+              <input type="number" step="0.01" ref={(a) => this._inputCost = a} placeholder="Enter Amount">
               </input>
               <label>Choose a Category:  </label>
               <select id="categorysel" ref={(a) => this._inputCategory = a}>
