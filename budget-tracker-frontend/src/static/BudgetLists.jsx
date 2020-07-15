@@ -10,7 +10,8 @@ class BudgetLists extends React.Component {
     super(props);
 
     this.state = {
-      items: [],
+      // items: [],
+      items : this.getItems(),
       totalExpenses: 0,
       subExpenses: 0,
       foodExpenses: 0,
@@ -23,6 +24,21 @@ class BudgetLists extends React.Component {
 
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.addItemToDB = this.addItemToDB.bind(this);
+    this.removeItemFromDB = this.removeItemFromDB.bind(this);
+  }
+
+  async getItems() {
+
+    let data = await fetch('http://127.0.0.1:5000/user/budget', {
+      mode : 'cors',
+      method : 'GET',
+      origin : 'http://127.0.0.1:3000',
+      credentials : 'include'
+    })
+    .then(response => response.json())
+
+    return data
   }
 
   addItem(e) {
@@ -69,8 +85,48 @@ class BudgetLists extends React.Component {
       console.log(itemArray);
 
       e.preventDefault();
+
+      this.addItemToDB();
     }
   }
+
+  async addItemToDB() {
+
+    var dt = new Date(Date.now()).toISOString()
+    /* data = {
+      title : this._inputItem.value,
+      price : this._inputCost.value,
+      date : dt,
+      category : this._inputCategory.value,
+
+    } */
+
+    let response = await fetch('http://127.0.0.1:5000/user/budget', {
+      mode : 'cors',
+      method : 'POST',
+      credentials : 'include',
+      body : JSON.stringify(data)
+    })
+
+    return response.status
+  }
+
+  async removeItemFromDB() {
+    // need some way to identify the item 
+    // data = 
+
+    let response = await fetch('http://127.0.0.1:5000/user/budget', {
+      mode : 'cors',
+      method : 'DELETE',
+      credentials : 'include',
+      body : JSON.stringify(data)
+    })
+
+    return response.status
+    
+  }
+
+
 
   deleteItem(key) {
     var filteredItems = this.state.items.filter(function (item) {

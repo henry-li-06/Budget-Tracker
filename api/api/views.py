@@ -19,14 +19,23 @@ def new_user(data):
     username = data['username']
     password = data['password']
     email = data['email']
+    public_id = str(uuid4())
     
     hashed_password = bcrypt.generate_password_hash(password)
     new_user = User(first_name = first_name, last_name = last_name, username = username, \
-        password = hashed_password, email = email, public_id = str(uuid4()))
+        password = hashed_password, email = email, public_id = public_id)
     try:
         db.session.add(new_user)
         db.session.commit()
-        return { 'message' : 'New user created!' }, 201
+
+        access_token = generate_access_token(public_id)
+        refresh_token = generate_refresh_token(public_id)
+        res = make_response({ 'message' : 'New user created!' })
+        res.set_cookie('x-access-token', value = access_token, httponly = True, samesite = \
+            None, expires = datetime.utcnow() + timedelta(minutes = 30))
+        res.set_cookie('x-refresh-token', value = refresh_token, httponly = True, samesite = \
+            None, expires = datetime.utcnow() + timedelta(weeks = 2), path = '/user/login/refresh')
+        return res, 201
     except:
         return { 'message' : 'There was an issue creating a new user!' }, 400
 
@@ -57,32 +66,27 @@ def login():
     return { 'message' : 'Invalid username or password!' }, 401
 
 
-@app.route('/user/budget/all', methods = ['GET'])
+@app.route('/user/budget', methods = ['GET'])
 @token_required
 def get_all_budget_items(current_user):
 
     budget_item_list = BudgetItem.query.filter_by(user_id = current_user.id).all()
-    budget_items = {
-        'Subscriptions and Recurring Expenses' : [],
-        'Food and Dining' : [],
-        'Housing and Utilies' : [],
-        'Entertainment and Recreation' : [],
-        'Medical and Healthcare' : [],
-        'Other' : []
-    }
+    budget_items = []
 
     for budget_item in budget_item_list:
         budget_item_info = {
-            'title' : budget_item.title,
+            'name' : budget_item.title,
             'price' : budget_item.price,
-            'date' : budget_item.date, 
-            'user_id' : budget_item.user_id
+            'date' : budget_item.date,
+            'category' : budget_item.category,
+            'id' : budget_item.id
         }
-        budget_items[budget_item.category].append(budget_item_info)
+        budget_items.append(budget_item_info)
 
     return { 'budget_items' : budget_items }
 
-@app.route('/user/budget/new', methods = ['POST'])
+
+@app.route('/user/budget', methods = ['POST'])
 @token_required
 def new_budget_item(current_user):
     data = request.get_json(force = True)
@@ -90,7 +94,7 @@ def new_budget_item(current_user):
     price = int(data['price'])
     title = data['title']
     category = data['category'] 
-    date = datetime.strptime(data['date'], '%Y-%m-%d')
+    date = datetime.strptime(data['date'], '%Y-%m-%d') #! NEEDS TO BE TESTED
     user_id = current_user.id
 
     if(not category in BudgetItem.categories):
@@ -104,6 +108,12 @@ def new_budget_item(current_user):
         return { 'message' : 'New budget item created!' }, 201
     except:
         return { 'message' : 'There was an issue creating a new budget item!' }
+
+
+@app.route('user/budget', methods = ['DELETE'])
+@token_required
+def delete_budget_item(current_user):
+    pass
 
 
 @app.route('/user/login/refresh', methods = ['GET'])
