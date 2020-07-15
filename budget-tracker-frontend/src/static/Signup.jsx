@@ -1,14 +1,15 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import './../styles/login.css'
 
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      firstName : "",
-      lastName : "",
-      email : "",
+      firstName: "",
+      lastName: "",
+      email: "",
       username: "",
       password: "",
       isValidNewUser: false
@@ -18,41 +19,59 @@ class Signup extends React.Component {
   }
 
   render() {
-    if(this.state.isValidNewUser) {
+    if (this.state.isValidNewUser) {
       return (
-        <Redirect to = {{
-          pathname : '/tracker'
+        <Redirect to={{
+          pathname: '/tracker'
         }}
         />
       )
     }
 
     return (
-      <div className = "container"> 
-      <form>
-          <input id="firstNameInput" ref={(a) => this._inputFirstName = a} type="text" placeholder="Enter First name" onChange = { this.handleChange } >
+      <div className="container">
+        <div id="header">
+          Sign up to start using the budget tracker for free!
+        </div>
+        <form>
+          <div className="loginBox">
+            <label>First name</label> <br></br>
+            <input id="firstNameInput" ref={(a) => this._inputFirstName = a} type="text" placeholder="Enter First name" onChange={this.handleChange} >
             </input>
-            <input id="lastNameInput" ref={(a) => this._inputLastName = a} type="text" placeholder="Enter Last name" onChange = { this.handleChange } >
+          </div>
+          <div className="loginBox">
+            <label>Last name</label> <br></br>
+            <input id="lastNameInput" ref={(a) => this._inputLastName = a} type="text" placeholder="Enter Last name" onChange={this.handleChange} >
             </input>
-            <input id="emailInput" ref={(a) => this._inputEmail = a} type="text" placeholder="Enter Email" onChange = { this.handleChange } >
+          </div>
+          <div className="loginBox">
+            <label>Email</label> <br></br>
+            <input id="emailInput" ref={(a) => this._inputEmail = a} type="text" placeholder="Enter Email" onChange={this.handleChange} >
             </input>
-            <input id="usernameInput" ref={(a) => this._inputUsername = a} type="text" placeholder="Enter Username" onChange = { this.handleChange } >
+          </div>
+          <div className="loginBox">
+            <label>Username</label> <br></br>
+            <input id="usernameInput" ref={(a) => this._inputUsername = a} type="text" placeholder="Enter Username" onChange={this.handleChange} >
             </input>
-            <input id="passwordInput" ref={(a) => this._inputPassword = a} type="password" placeholder="Enter Password" onChange = { this.handleChange } >
+          </div>
+          <div className="loginBox">
+            <label>Password</label> <br></br>
+            <input id="passwordInput" ref={(a) => this._inputPassword = a} type="password" placeholder="Enter Password" onChange={this.handleChange} >
             </input>
-            <button type = 'submit' onClick = { this.handleSubmit }>Sign up</button>
-          </form>
+          </div>
+          <button type='submit' onClick={this.handleSubmit}>Sign up</button>
+        </form>
       </div>
     )
   }
 
   handleChange() {
     this.setState({
-      firstName : this._inputFirstName.value,
-      lastName : this._inputLastName.value,
-      username : this._inputUsername.value,
-      password : this._inputPassword.value,
-      email : this._inputEmail.value
+      firstName: this._inputFirstName.value,
+      lastName: this._inputLastName.value,
+      username: this._inputUsername.value,
+      password: this._inputPassword.value,
+      email: this._inputEmail.value
     })
   }
 
@@ -60,11 +79,11 @@ class Signup extends React.Component {
     event.preventDefault();
 
     const data = {
-      'first_name' : this.state.firstName,
-      'last_name' : this.state.lastName,
-      'username' : this.state.username,
-      'password' : this.state.password,
-      'email' : this.state.email,
+      'first_name': this.state.firstName,
+      'last_name': this.state.lastName,
+      'username': this.state.username,
+      'password': this.state.password,
+      'email': this.state.email,
     }
 
     let headers = new Headers()
@@ -74,12 +93,12 @@ class Signup extends React.Component {
 
     var httpStatus;
     let response = await fetch('http://127.0.0.1:5000/user/new', {
-        mode : 'cors',
-        method : 'POST',
-        headers: headers,
-        body : JSON.stringify(data)
+      mode: 'cors',
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(data)
     })
-    if(response.status === 201) this.setState({ isValidNewUser : true })
+    if (response.status === 201) this.setState({ isValidNewUser: true })
 
   }
 }
