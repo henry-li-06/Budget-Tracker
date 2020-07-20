@@ -18,6 +18,7 @@ class BudgetItem(db.Model):
     date = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     category = db.Column(db.String, default = 'Other')
+    key = db.Column(db.String, nullable = False, unique = True)
 
     categories = [
         'Subscriptions and Recurring Expenses',

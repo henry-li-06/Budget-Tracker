@@ -72,18 +72,38 @@ def get_all_budget_items(current_user):
 
     budget_item_list = BudgetItem.query.filter_by(user_id = current_user.id).all()
     budget_items = []
+    category_costs = {}
+    total_cost = 0.0
+    for category in BudgetItem.categories:
+        category_costs[category] = 0.0
 
     for budget_item in budget_item_list:
         budget_item_info = {
             'name' : budget_item.name,
             'cost' : budget_item.cost,
-            'key' : datetime.timestamp(budget_item.date), 
+            'key' : budget_item.key, 
             'category' : budget_item.category,
-            'id' : budget_item.id
+            'date' : str(int(datetime.timestamp(budget_item.date)))
         }
         budget_items.append(budget_item_info)
+        total_cost += budget_item.cost
+        category_costs[budget_item.category] += budget_item.cost
+    
+    greatest_category = "None"
+    greatest_cost = 0.0
+    for category in category_costs.keys():
+        if(category_costs[category] > greatest_cost):
+            greatest_cost = category_costs[category] 
+            greatest_category = category
 
-    return { 'budget_items' : budget_items }
+    
+
+    return {  
+        'budget_items' : budget_items,
+        'category_costs' : category_costs,
+        'greatest_category' : greatest_category,
+        'total_cost' : total_cost
+        }
 
 
 @app.route('/user/budget/new', methods = ['POST'])
@@ -91,9 +111,10 @@ def get_all_budget_items(current_user):
 def new_budget_item(current_user):
     data = request.get_json(force = True)
 
-    cost = int(data['cost'])
+    cost = float(data['cost'])
     name = data['name']
     category = data['category'] 
+    key = data['key']
     date = datetime.fromtimestamp(data['date'] / 1000)
     user_id = current_user.id
 
@@ -102,7 +123,7 @@ def new_budget_item(current_user):
 
     try:
         new_budget_item = BudgetItem(cost = cost, name = name, category = category, \
-            user_id = user_id, date = date)
+            user_id = user_id, date = date, key = key)
         db.session.add(new_budget_item)
         db.session.commit()
         return { 'message' : 'New budget item created!' }, 201
@@ -115,10 +136,10 @@ def new_budget_item(current_user):
 def delete_budget_item(current_user):
     data = request.get_json()
 
-    date = int(float(data['key']))
+    key = data['key']
     try:
-        budget_item = Budget_Item.query.filter_by(date = datetime.fromtimestamp(date / 1000)).first()
-        return { 'bruh' : 'bruh' }, 500
+        budget_item = BudgetItem.query.filter_by(key = key).first()
+        # return { 'bruh' : 'bruh' }, 500
         if(budget_item):
             db.session.delete(budget_item)
             db.session.commit()

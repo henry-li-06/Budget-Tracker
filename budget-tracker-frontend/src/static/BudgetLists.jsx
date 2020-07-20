@@ -1,7 +1,8 @@
 import React from 'react';
 import BudgetItems from './BudgetItems';
 import './../styles/budgetlists.css';
-import Dashboard from './Dashboard'
+import Dashboard from './Dashboard';
+import { v4 as uuid4 } from 'uuid';
 
 
 class BudgetLists extends React.Component {
@@ -24,20 +25,18 @@ class BudgetLists extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.addItemToDB = this.addItemToDB.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
-    // this.deleteItemFromDB = this.deleteItemFromDB.bind(this);
 
-    // this.getItems()
   }
 
   componentDidMount() {
-    return;
+    // return;
     let headers = new Headers()
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     headers.append('Origin', 'http://127.0.0.1:3000');
 
     
-    fetch('http://127.0.0.1:5000/user/budget/all', {
+    fetch('http://127.0.0.1:5000/user/budget', {
       mode : 'cors',
       method : 'GET',
       headers : headers,
@@ -45,23 +44,35 @@ class BudgetLists extends React.Component {
     })
     .then(response => response.json())
     .then(data => this.setState({ //! NEED TO UPDATE THE OTHER PARTS OF STATE TOO NOT SURE HOW
-      items : data.budget_items 
+      items : data.budget_items,
+      totalExpenses : data.total_cost,
+      subExpenses : data.category_costs['Subscriptions and Recurring Expenses'],
+      foodExpenses : data.category_costs['Food and Dining'],
+      housingExpenses : data.category_costs['Housing and Utilities'],
+      entertainExpenses : data.category_costs['Entertainment and Recreation'],
+      medicalExpenses : data.category_costs['Medical and Healthcare'],
+      otherExpenses : data.category_costs['Other'],
+      greatestCategory : data.greatest_category
     }));
-    // return data.budget_items;
+
+    
 
   }
 
   addItem(e) {
     var itemArray = this.state.items;
+    const key = uuid4();
     if (this._inputItem.value !== "" &&
       this._inputCost.value !== "" &&
       this._inputCost.value > 0.00 &&
-      this._inputCategory.value !== "") {
+      this._inputCategory.value !== "" &&
+      this._inputDate.value !== "") {
       itemArray.unshift({
         name: this._inputItem.value,
         cost: this._inputCost.value,
         category: this._inputCategory.value,
-        key: Date.now()
+        date: this._inputDate.value,
+        key : key
       });
       var totalCost = parseFloat(this.state.totalExpenses) + parseFloat(this._inputCost.value);
       var subCost = this._inputCategory.value === "Subscriptions and Recurring Expenses" ? parseFloat(this._inputCost.value) + parseFloat(this.state.subExpenses) : parseFloat(this.state.subExpenses);
@@ -90,24 +101,27 @@ class BudgetLists extends React.Component {
 
       });
       console.log(Date.now())
-      this.addItemToDB()
+      this.addItemToDB(key)
       this._inputItem.value = "";
       this._inputCost.value = "";
       this._inputCategory.value = "";
+      this._inputDate.value = "";
       console.log(itemArray);
 
       e.preventDefault();
 
-      this.addItemToDB();
+      // this.addItemToDB(key);
     }
   }
 
-  async addItemToDB() {
+  async addItemToDB(key) {
     const data = {
-      title : this._inputItem.value,
-      price : this._inputCost.value,
+      name : this._inputItem.value,
+      cost : this._inputCost.value,
       date : Date.now(),
-      category : this._inputCategory.value
+      category : this._inputCategory.value,
+      key : key
+
     }
     console.log(Date.now())
 
@@ -190,7 +204,7 @@ class BudgetLists extends React.Component {
                 <option value="Other">Other</option>
               </select>
               <label>Date: </label> 
-              <input type = 'date'></input> {/* Only for not subscriptsion and recurring expenses */}
+              <input id = 'dateInput' ref = {(a) => this._inputDate = a} type = 'date'></input> {/* Only for not subscriptsion and recurring expenses */}
               <button type="submit">Add Item</button>
             </form>
           </div>
