@@ -30,7 +30,6 @@ def new_user(data):
 
         access_token = generate_access_token(public_id)
         refresh_token = generate_refresh_token(public_id)
-
         res = make_response({ 'message' : 'New user created!' })
         res.set_cookie('x-access-token', value = access_token, httponly = True, samesite = \
             None, expires = datetime.utcnow() + timedelta(minutes = 30))
@@ -67,7 +66,7 @@ def login():
     return { 'message' : 'Invalid username or password!' }, 401
 
 
-@app.route('/user/budget/all', methods = ['GET'])
+@app.route('/user/budget', methods = ['GET'])
 @token_required
 def get_all_budget_items(current_user):
 
