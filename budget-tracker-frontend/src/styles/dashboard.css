@@ -1,0 +1,39 @@
+#dashboard {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dashItem {
+  margin-left: 4vw;
+  margin-right: 4vw;
+  margin-top: 2vw;
+  margin-bottom: 2vw; 
+  width: 15%;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  border-radius: 25px;
+  /* background-color: #EFEFEF; */
+  background-color: #C6E2E9;
+  padding-bottom: 2vw;
+  padding-top: 2vw;
+  padding-left: 4vw;
+  padding-right: 4vw;
+  font-size: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.dashItem div {
+  padding-top: 30px;
+  color: green;
+  font-size: 40px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#greatestCatText {
+  font-size: 28px;
+}
