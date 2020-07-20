@@ -77,8 +77,10 @@ class Signup extends React.Component {
         mode : 'cors',
         method : 'POST',
         headers: headers,
+        credentials : 'include',
         body : JSON.stringify(data)
     })
+    console.log(response.json())
     if(response.status === 201) this.setState({ isValidNewUser : true })
 
   }

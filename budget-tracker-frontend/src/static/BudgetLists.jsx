@@ -10,7 +10,7 @@ class BudgetLists extends React.Component {
     super(props);
 
     this.state = {
-      items: [],
+      items : [],
       totalExpenses: 0,
       subExpenses: 0,
       foodExpenses: 0,
@@ -22,7 +22,33 @@ class BudgetLists extends React.Component {
     };
 
     this.addItem = this.addItem.bind(this);
+    this.addItemToDB = this.addItemToDB.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    // this.deleteItemFromDB = this.deleteItemFromDB.bind(this);
+
+    // this.getItems()
+  }
+
+  componentDidMount() {
+    return;
+    let headers = new Headers()
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', 'http://127.0.0.1:3000');
+
+    
+    fetch('http://127.0.0.1:5000/user/budget/all', {
+      mode : 'cors',
+      method : 'GET',
+      headers : headers,
+      credentials : 'include'
+    })
+    .then(response => response.json())
+    .then(data => this.setState({ //! NEED TO UPDATE THE OTHER PARTS OF STATE TOO NOT SURE HOW
+      items : data.budget_items 
+    }));
+    // return data.budget_items;
+
   }
 
   addItem(e) {
@@ -63,6 +89,8 @@ class BudgetLists extends React.Component {
 
 
       });
+      console.log(Date.now())
+      this.addItemToDB()
       this._inputItem.value = "";
       this._inputCost.value = "";
       this._inputCategory.value = "";
@@ -70,6 +98,31 @@ class BudgetLists extends React.Component {
 
       e.preventDefault();
     }
+  }
+
+  async addItemToDB() {
+    const data = {
+      title : this._inputItem.value,
+      price : this._inputCost.value,
+      date : Date.now(),
+      category : this._inputCategory.value
+    }
+    console.log(Date.now())
+
+    let headers = new Headers()
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', 'http://127.0.0.1:3000');
+
+    let response = await fetch('http://127.0.0.1:5000/user/budget/new', {
+      mode : 'cors',
+      method : 'POST',
+      headers : headers,
+      credentials : 'include',
+      body : JSON.stringify(data)
+    })
+    console.log(response.json())
+    return response.status
   }
 
   deleteItem(key) {
@@ -96,7 +149,6 @@ class BudgetLists extends React.Component {
             (entertainCost >= medicalCost && entertainCost >= otherCost ? "Entertainment and Recreation" :
               (medicalCost >= otherCost ? "Medical and Healthcare" : "Other")))));
 
-
     this.setState({
       items: filteredItems,
       totalExpenses: totalCost,
@@ -114,7 +166,7 @@ class BudgetLists extends React.Component {
 
 
   render() {
-
+  
     return (
       <div className="wholePage">
         <Dashboard totalCost={this.state.totalExpenses} totalSubCost={this.state.subExpenses} greatestCategory={this.state.greatestCategory} />
@@ -135,6 +187,8 @@ class BudgetLists extends React.Component {
                 <option value="Medical and Healthcare">Medical and Healthcare</option>
                 <option value="Other">Other</option>
               </select>
+              <label>Date: </label> 
+              <input type = 'date'></input> {/* Only for not subscriptsion and recurring expenses */}
               <button type="submit">Add Item</button>
             </form>
           </div>

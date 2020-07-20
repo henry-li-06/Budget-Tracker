@@ -23,6 +23,29 @@ class BudgetItems extends React.Component {
 
   delete(key) {
     this.props.delete(key);
+    this.deleteItemFromDB(key);
+  }
+
+  async deleteItemFromDB(key) {
+    console.log(key)
+    const data = {
+      key : key
+    };
+    
+    let headers = new Headers()
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', 'http://127.0.0.1:3000');
+
+    let response = await fetch('http://127.0.0.1:5000/user/budget/delete', {
+      mode : 'cors',
+      method : 'DELETE',
+      credentials : 'include',
+      body : JSON.stringify(data),
+      headers : headers
+    })
+    console.log(response.status)
+    return response.status
   }
 
   render() {
