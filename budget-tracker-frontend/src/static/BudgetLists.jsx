@@ -1,8 +1,10 @@
 import React from 'react';
 import BudgetItems from './BudgetItems';
+import getNewAccessToken from './../utils/utils.js';
 import './../styles/budgetlists.css';
 import Dashboard from './Dashboard';
 import { v4 as uuid4 } from 'uuid';
+import { Redirect } from 'react-router-dom';
 
 
 class BudgetLists extends React.Component {
@@ -11,7 +13,8 @@ class BudgetLists extends React.Component {
     super(props);
 
     this.state = {
-      items : [],
+      items: [],
+      isAuthorized: true,
       totalExpenses: 0,
       subExpenses: 0,
       foodExpenses: 0,
@@ -35,29 +38,90 @@ class BudgetLists extends React.Component {
     headers.append('Accept', 'application/json');
     headers.append('Origin', 'http://127.0.0.1:3000');
 
-    
+    let currentComponent = this;
     fetch('http://127.0.0.1:5000/user/budget', {
-      mode : 'cors',
-      method : 'GET',
-      headers : headers,
-      credentials : 'include'
+      mode: 'cors',
+      method: 'GET',
+      headers: headers,
+      credentials: 'include'
     })
-    .then(response => response.json())
-    .then(data => this.setState({ //! NEED TO UPDATE THE OTHER PARTS OF STATE TOO NOT SURE HOW
-      items : data.budget_items,
-      totalExpenses : data.total_cost,
-      subExpenses : data.category_costs['Subscriptions and Recurring Expenses'],
-      foodExpenses : data.category_costs['Food and Dining'],
-      housingExpenses : data.category_costs['Housing and Utilities'],
-      entertainExpenses : data.category_costs['Entertainment and Recreation'],
-      medicalExpenses : data.category_costs['Medical and Healthcare'],
-      otherExpenses : data.category_costs['Other'],
-      greatestCategory : data.greatest_category
-    }));
 
-    
+      .then(response => {
+        if (response.status === 401) {
+          if (getNewAccessToken()) {
+            currentComponent.forceUpdate()
+          }
+          else {
+            currentComponent.setState({ isAuthorized: false });
+          }
+          return Promise.reject()
+        }
+        else return response.json()
+      })
+      .then(data => this.setState({
+        items: data.budget_items,
+        totalExpenses: data.total_cost,
+        subExpenses: data.category_costs['Subscriptions and Recurring Expenses'],
+        foodExpenses: data.category_costs['Food and Dining'],
+        housingExpenses: data.category_costs['Housing and Utilities'],
+        entertainExpenses: data.category_costs['Entertainment and Recreation'],
+        medicalExpenses: data.category_costs['Medical and Healthcare'],
+        otherExpenses: data.category_costs['Other'],
+        greatestCategory: data.greatest_category
+      })
+      );
 
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let headers = new Headers()
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', 'http://127.0.0.1:3000');
+
+    let currentComponent = this;
+    fetch('http://127.0.0.1:5000/user/budget', {
+      mode: 'cors',
+      method: 'GET',
+      headers: headers,
+      credentials: 'include'
+    })
+      .then(response => {
+        if (response.status === 401) {
+          if (getNewAccessToken()) {
+            currentComponent.forceUpdate();
+
+          }
+          else {
+            currentComponent.setState({ isAuthorized: false })
+
+          }
+          return Promise.reject()
+        }
+        return response.json()
+      })
+      .then(data => {
+        console.log(data); this.setState({
+          items: data.budget_items,
+          totalExpenses: data.total_cost,
+          subExpenses: data.category_costs['Subscriptions and Recurring Expenses'],
+          foodExpenses: data.category_costs['Food and Dining'],
+          housingExpenses: data.category_costs['Housing and Utilities'],
+          entertainExpenses: data.category_costs['Entertainment and Recreation'],
+          medicalExpenses: data.category_costs['Medical and Healthcare'],
+          otherExpenses: data.category_costs['Other'],
+          greatestCategory: data.greatest_category
+        })
+      }
+      );
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.items !== this.state.items) return true;
+    return false;
+  }
+
+
 
   addItem(e) {
     var itemArray = this.state.items;
@@ -72,7 +136,7 @@ class BudgetLists extends React.Component {
         cost: this._inputCost.value,
         category: this._inputCategory.value,
         date: this._inputDate.value,
-        key : key
+        key: key
       });
       var totalCost = parseFloat(this.state.totalExpenses) + parseFloat(this._inputCost.value);
       var subCost = this._inputCategory.value === "Subscriptions and Recurring Expenses" ? parseFloat(this._inputCost.value) + parseFloat(this.state.subExpenses) : parseFloat(this.state.subExpenses);
@@ -100,13 +164,13 @@ class BudgetLists extends React.Component {
 
 
       });
-      console.log(Date.now())
+      // console.log(Date.now())
       this.addItemToDB(key)
       this._inputItem.value = "";
       this._inputCost.value = "";
       this._inputCategory.value = "";
       this._inputDate.value = "";
-      console.log(itemArray);
+      // console.log(itemArray);
 
       e.preventDefault();
 
@@ -116,14 +180,14 @@ class BudgetLists extends React.Component {
 
   async addItemToDB(key) {
     const data = {
-      name : this._inputItem.value,
-      cost : this._inputCost.value,
-      date : Date.now(),
-      category : this._inputCategory.value,
-      key : key
+      name: this._inputItem.value,
+      cost: this._inputCost.value,
+      date: Date.now(),
+      category: this._inputCategory.value,
+      key: key
 
     }
-    console.log(Date.now())
+    // console.log(Date.now())
 
     let headers = new Headers()
     headers.append('Content-Type', 'application/json');
@@ -131,13 +195,16 @@ class BudgetLists extends React.Component {
     headers.append('Origin', 'http://127.0.0.1:3000');
 
     let response = await fetch('http://127.0.0.1:5000/user/budget/new', {
-      mode : 'cors',
-      method : 'POST',
-      headers : headers,
-      credentials : 'include',
-      body : JSON.stringify(data)
+      mode: 'cors',
+      method: 'POST',
+      headers: headers,
+      credentials: 'include',
+      body: JSON.stringify(data)
     })
-    console.log(response.json())
+    // console.log(response.json())
+    if (response.status === 401) {
+      this.setState({ isAuthorized: false })
+    }
     return response.status
   }
 
@@ -177,42 +244,78 @@ class BudgetLists extends React.Component {
       greatestCategory: greatestCat
     });
 
+    const data = {
+      key: key
+    };
+
+    let headers = new Headers()
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', 'http://127.0.0.1:3000');
+
+    fetch('http://127.0.0.1:5000/user/budget/delete', {
+      mode: 'cors',
+      method: 'DELETE',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      headers: headers
+    })
+      .then(response => {
+        if (response.status === 401) {
+          this.setState({ isAuthorized: false })
+          return Promise.reject();
+        }
+        else return response.json()
+      })
+      .then(data => console.log(data))
+
+
   }
 
 
 
   render() {
-  
-    return (
-      <div className="wholePage">
-        <Dashboard totalCost={this.state.totalExpenses} totalSubCost={this.state.subExpenses} greatestCategory={this.state.greatestCategory} />
-        <div className="todoListMain">
-          <div className="budgetheader">
-            <form onSubmit={this.addItem}>
-              <label>Enter budget item:  </label>
-              <input id="itemInput" ref={(a) => this._inputItem = a} placeholder="Enter Item">
-              </input>
-              <input type="number" step="0.01" ref={(a) => this._inputCost = a} placeholder="Enter Amount">
-              </input>
-              <label>Choose a Category:  </label>
-              <select id="categorysel" ref={(a) => this._inputCategory = a}>
-                <option value="Subscriptions and Recurring Expenses">Subscriptions and Recurring Expenses</option>
-                <option value="Food and Dining">Food and Dining</option>
-                <option value="Housing and Utilities">Housing and Utilities</option>
-                <option value="Entertainment and Recreation">Entertainment and Recreation</option>
-                <option value="Medical and Healthcare">Medical and Healthcare</option>
-                <option value="Other">Other</option>
-              </select>
-              <label>Date: </label> 
-              <input id = 'dateInput' ref = {(a) => this._inputDate = a} type = 'date'></input> {/* Only for not subscriptsion and recurring expenses */}
-              <button type="submit">Add Item</button>
-            </form>
+    if (!this.state.isAuthorized) {
+      return (
+        <Redirect to={{
+          pathname: '/login'
+        }}
+        />
+      )
+    } else
+      return (
+        <div className="wholePage">
+          <Dashboard
+            totalCost={this.state.totalExpenses}
+            totalSubCost={this.state.subExpenses}
+            greatestCategory={this.state.greatestCategory} />
+          <div className="todoListMain">
+            <div className="budgetheader">
+              <form onSubmit={this.addItem}>
+                <label>Enter budget item:  </label>
+                <input id="itemInput" ref={(a) => this._inputItem = a} placeholder="Enter Item">
+                </input>
+                <input type="number" step="0.01" ref={(a) => this._inputCost = a} placeholder="Enter Amount">
+                </input>
+                <label>Choose a Category:  </label>
+                <select id="categorysel" ref={(a) => this._inputCategory = a}>
+                  <option value="Subscriptions and Recurring Expenses">Subscriptions and Recurring Expenses</option>
+                  <option value="Food and Dining">Food and Dining</option>
+                  <option value="Housing and Utilities">Housing and Utilities</option>
+                  <option value="Entertainment and Recreation">Entertainment and Recreation</option>
+                  <option value="Medical and Healthcare">Medical and Healthcare</option>
+                  <option value="Other">Other</option>
+                </select>
+                <label>Date: </label>
+                <input id='dateInput' ref={(a) => this._inputDate = a} type='date'></input> {/* Only for not subscriptsion and recurring expenses */}
+                <button type="submit">Add Item</button>
+              </form>
+            </div>
+            <BudgetItems entries={this.state.items}
+              delete={this.deleteItem} />
           </div>
-          <BudgetItems entries={this.state.items}
-            delete={this.deleteItem} />
         </div>
-      </div>
-    )
+      )
   }
 }
 

@@ -56,6 +56,7 @@ class Signup extends React.Component {
           </div>
           <div className="loginBox">
             <label>Password</label> <br></br>
+            <p>Password must be at least 8 characters, and include at least 1 upper case character, 1 lower case character, and 1 symbol.</p>
             <input id="passwordInput" ref={(a) => this._inputPassword = a} type="password" placeholder="Enter Password" onChange={this.handleChange} >
             </input>
           </div>
@@ -93,14 +94,15 @@ class Signup extends React.Component {
 
     var httpStatus;
     let response = await fetch('http://127.0.0.1:5000/user/new', {
-        mode : 'cors',
-        method : 'POST',
-        headers: headers,
-        credentials : 'include',
-        body : JSON.stringify(data)
+      mode: 'cors',
+      method: 'POST',
+      headers: headers,
+      credentials: 'include',
+      body: JSON.stringify(data)
     })
     console.log(response.json())
-    if(response.status === 201) this.setState({ isValidNewUser : true })
+    if (response.status === 201) this.setState({ isValidNewUser: true })
+
 
   }
 }

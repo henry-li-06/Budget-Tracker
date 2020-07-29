@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import './../styles/budgetitems.css';
 
 
@@ -6,7 +7,15 @@ class BudgetItems extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      isAuthorized: true
+    }
+
     this.createTasks = this.createTasks.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.isAuthorized
   }
 
   createTasks(item) {
@@ -23,28 +32,29 @@ class BudgetItems extends React.Component {
 
   delete(key) {
     this.props.delete(key);
-    this.deleteItemFromDB(key);
+    // this.deleteItemFromDB(key);
   }
 
   async deleteItemFromDB(key) {
     console.log(key)
     const data = {
-      key : key
+      key: key
     };
-    
+
     let headers = new Headers()
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     headers.append('Origin', 'http://127.0.0.1:3000');
 
     let response = await fetch('http://127.0.0.1:5000/user/budget/delete', {
-      mode : 'cors',
-      method : 'DELETE',
-      credentials : 'include',
-      body : JSON.stringify(data),
-      headers : headers
+      mode: 'cors',
+      method: 'DELETE',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      headers: headers
     })
-    console.log(response.status)
+    // console.log(response.status)
+    if (response.status === 401) this.setState({ isAuthorized: false })
     return response.status
   }
 
@@ -56,8 +66,8 @@ class BudgetItems extends React.Component {
     var entertainmentItems = BudgetEntries.filter(item => item.category === "Entertainment and Recreation").map(this.createTasks);
     var medicalItems = BudgetEntries.filter(item => item.category === "Medical and Healthcare").map(this.createTasks);
     var otherItems = BudgetEntries.filter(item => item.category === "Other").map(this.createTasks);
-
     return (
+
       <div id="listContainer">
         <div className="categoryLine">
           <ul className="subscriptionsList theList">
