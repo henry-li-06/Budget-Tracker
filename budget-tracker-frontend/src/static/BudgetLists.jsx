@@ -28,11 +28,11 @@ class BudgetLists extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.addItemToDB = this.addItemToDB.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.setGreatestCategory = this.setGreatestCategory.bind(this);
 
   }
 
   componentDidMount() {
-    // return;
     let headers = new Headers()
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
@@ -101,7 +101,7 @@ class BudgetLists extends React.Component {
         return response.json()
       })
       .then(data => {
-        console.log(data); this.setState({
+        this.setState({
           items: data.budget_items,
           totalExpenses: data.total_cost,
           subExpenses: data.category_costs['Subscriptions and Recurring Expenses'],
@@ -121,10 +121,40 @@ class BudgetLists extends React.Component {
     return false;
   }
 
-
+  setGreatestCategory() {
+    let currentMax = 0;
+    let maxCategory = "None";
+    if (this.state.subExpenses > currentMax) {
+      currentMax = this.state.subExpenses;
+      maxCategory = "Subscriptions and Recurring Expenses";
+    }
+    if (this.state.foodExpenses > currentMax) {
+      currentMax = this.state.foodExpenses;
+      maxCategory = "Food and Dining";
+    }
+    if (this.state.housingExpenses > currentMax) {
+      currentMax = this.state.housingExpenses;
+      maxCategory = "Housing and Utilities";
+    }
+    if (this.state.entertainExpenses > currentMax) {
+      currentMax = this.state.entertainExpenses;
+      maxCategory = "Entertainment and Recreation";
+    }
+    if (this.state.medicalExpenses > currentMax) {
+      currentMax = this.state.medicalExpenses;
+      maxCategory = "Medical and Healthcare";
+    }
+    if (this.state.otherExpenses > currentMax) {
+      currentMax = this.state.ptherExpenses;
+      maxCategory = "Other";
+    }
+    this.setState({
+      greatestCategory: maxCategory
+    })
+  }
 
   addItem(e) {
-    var itemArray = this.state.items;
+    let itemArray = this.state.items;
     const key = uuid4();
     if (this._inputItem.value !== "" &&
       this._inputCost.value !== "" &&
@@ -138,32 +168,50 @@ class BudgetLists extends React.Component {
         date: this._inputDate.value,
         key: key
       });
-      var totalCost = parseFloat(this.state.totalExpenses) + parseFloat(this._inputCost.value);
-      var subCost = this._inputCategory.value === "Subscriptions and Recurring Expenses" ? parseFloat(this._inputCost.value) + parseFloat(this.state.subExpenses) : parseFloat(this.state.subExpenses);
-      var foodCost = this._inputCategory.value === "Food and Dining" ? parseFloat(this._inputCost.value) + parseFloat(this.state.foodExpenses) : parseFloat(this.state.foodExpenses);
-      var housingCost = this._inputCategory.value === "Housing and Utilities" ? parseFloat(this._inputCost.value) + parseFloat(this.state.housingExpenses) : parseFloat(this.state.housingExpenses);
-      var entertainCost = this._inputCategory.value === "Entertainment and Recreation" ? parseFloat(this._inputCost.value) + parseFloat(this.state.entertainExpenses) : parseFloat(this.state.entertainExpenses);
-      var medicalCost = this._inputCategory.value === "Medical and Healthcare" ? parseFloat(this._inputCost.value) + parseFloat(this.state.medicalExpenses) : parseFloat(this.state.medicalExpenses);
-      var otherCost = this._inputCategory.value === "Other" ? parseFloat(this._inputCost.value) + parseFloat(this.state.otherExpenses) : parseFloat(this.state.otherExpenses);
-      var greatestCat = totalCost === 0 ? "None" :
-        (subCost >= foodCost && subCost >= housingCost && subCost >= entertainCost && subCost >= medicalCost && subCost >= otherCost ? "Subscriptions and Recurring Expenses" :
-          (foodCost >= housingCost && foodCost >= entertainCost && foodCost >= medicalCost && foodCost >= otherCost ? "Food and Dining" :
-            (housingCost >= entertainCost && housingCost >= medicalCost && housingCost >= otherCost ? "Housing and Utilities" :
-              (entertainCost >= medicalCost && entertainCost >= otherCost ? "Entertainment and Recreation" :
-                (medicalCost >= otherCost ? "Medical and Healthcare" : "Other")))));
-      this.setState({
-        items: itemArray,
-        totalExpenses: totalCost,
-        subExpenses: subCost,
-        foodExpenses: foodCost,
-        housingExpenses: housingCost,
-        entertainExpenses: entertainCost,
-        medicalExpenses: medicalCost,
-        otherExpenses: otherCost,
-        greatestCategory: greatestCat
+      let totalCost = parseFloat(this.state.totalExpenses) + parseFloat(this._inputCost.value);
+      if (this._inputCategory.value === "Subscriptions and Recurring Expenses") {
+        this.setState({
+          items: itemArray,
+          totalExpenses: totalCost,
+          subExpenses: this.state.subExpenses + parseFloat(this._inputCost.value),
+        })
+      } else if (this._inputCategory.value === "Food and Dining") {
+        this.setState({
+          items: itemArray,
+          totalExpenses: totalCost,
+          foodExpenses: this.state.foodExpenses + parseFloat(this._inputCost.value),
+        })
+      } else if (this._inputCategory.value === "Housing and Utilities") {
+        this.setState({
+          items: itemArray,
+          totalExpenses: totalCost,
+          housingExpenses: this.state.housingExpenses + parseFloat(this._inputCost.value),
+        })
+      } else if (this._inputCategory.value === "Entertainment and Recreation") {
+        this.setState({
+          items: itemArray,
+          totalExpenses: totalCost,
+          entertainExpenses: this.state.entertainExpenses + parseFloat(this._inputCost.value),
 
+        })
+      } else if (this._inputCategory.value === "Medical and Healthcare") {
+        this.setState({
+          items: itemArray,
+          totalExpenses: totalCost,
+          medicalExpenses: this.state.medicalExpenses + parseFloat(this._inputCost.value),
 
-      });
+        })
+      } else if (this._inputCategory.value === "Other") {
+        this.setState({
+          items: itemArray,
+          totalExpenses: totalCost,
+          otherExpenses: this.state.otherExpenses + parseFloat(this._inputCost.value),
+        })
+      }
+
+      this.setGreatestCategory();
+
+      // });
       // console.log(Date.now())
       this.addItemToDB(key)
       this._inputItem.value = "";
@@ -208,41 +256,23 @@ class BudgetLists extends React.Component {
     return response.status
   }
 
-  deleteItem(key) {
-    var filteredItems = this.state.items.filter(function (item) {
+  deleteItem(key, category, cost) {
+    let filteredItems = this.state.items.filter(function (item) {
       return (item.key !== key);
     });
-    var totalCost = filteredItems.reduce((prev, next) => prev + next.cost, 0);
-    var subEntries = filteredItems.filter(item => item.category === "Subscriptions and Recurring Expenses");
-    var subCost = subEntries.reduce((prev, next) => prev + next.cost, 0);
-    var foodEntries = filteredItems.filter(item => item.category === "Food and Dining");
-    var foodCost = foodEntries.reduce((prev, next) => prev + next.cost, 0);
-    var housingEntries = filteredItems.filter(item => item.category === "Housing and Utilities");
-    var housingCost = housingEntries.reduce((prev, next) => prev + next.cost, 0);
-    var entertainmentEntries = filteredItems.filter(item => item.category === "Entertainment and Recreation");
-    var entertainCost = entertainmentEntries.reduce((prev, next) => prev + next.cost, 0);
-    var medicalEntries = filteredItems.filter(item => item.category === "Medical and Healthcare");
-    var medicalCost = medicalEntries.reduce((prev, next) => prev + next.cost, 0);
-    var otherEntries = filteredItems.filter(item => item.category === "Other");
-    var otherCost = otherEntries.reduce((prev, next) => prev + next.cost, 0);
-    var greatestCat = totalCost === 0 ? "None" :
-      (subCost >= foodCost && subCost >= housingCost && subCost >= entertainCost && subCost >= medicalCost && subCost >= otherCost ? "Subscriptions and Recurring Expenses" :
-        (foodCost >= housingCost && foodCost >= entertainCost && foodCost >= medicalCost && foodCost >= otherCost ? "Food and Dining" :
-          (housingCost >= entertainCost && housingCost >= medicalCost && housingCost >= otherCost ? "Housing and Utilities" :
-            (entertainCost >= medicalCost && entertainCost >= otherCost ? "Entertainment and Recreation" :
-              (medicalCost >= otherCost ? "Medical and Healthcare" : "Other")))));
 
     this.setState({
       items: filteredItems,
-      totalExpenses: totalCost,
-      subExpenses: subCost,
-      foodExpenses: foodCost,
-      housingExpenses: housingCost,
-      entertainExpenses: entertainCost,
-      medicalExpenses: medicalCost,
-      otherExpenses: otherCost,
-      greatestCategory: greatestCat
+      totalExpenses: this.state.totalExpenses - cost,
+      subExpenses: category === "Subscriptions and Recurring Expenses" ? this.state.subExpenses - cost : this.state.subExpenses,
+      foodExpenses: category === "Food and Dining" ? this.state.foodExpenses - cost : this.state.foodExpenses,
+      housingExpenses: category === "Housing and Utilities" ? this.state.housingExpenses - cost : this.state.housingExpenses,
+      entertainExpenses: category === "Entertainment and Recreation" ? this.state.entertainExpenses - cost : this.state.entertainExpenses,
+      medicalExpenses: category === "Medical and Healthcare" ? this.state.medicalExpenses - cost : this.state.medicalExpenses,
+      otherExpenses: category === "Other" ? this.state.otherExpenses - cost : this.state.otherExpenses
     });
+
+    this.setGreatestCategory();
 
     const data = {
       key: key
@@ -311,8 +341,16 @@ class BudgetLists extends React.Component {
                 <button type="submit">Add Item</button>
               </form>
             </div>
-            <BudgetItems entries={this.state.items}
-              delete={this.deleteItem} />
+            <BudgetItems
+              entries={this.state.items}
+              delete={this.deleteItem}
+              subscriptions={this.state.subExpenses}
+              food={this.state.foodExpenses}
+              housing={this.state.housingExpenses}
+              entertainment={this.state.entertainExpenses}
+              medical={this.state.medicalExpenses}
+              other={this.state.otherExpenses}
+            />
           </div>
         </div>
       )

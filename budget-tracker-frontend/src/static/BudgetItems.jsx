@@ -22,16 +22,17 @@ class BudgetItems extends React.Component {
     return (
       <div>
         <li className="ListItem" key={item.key}>
-          <div><p className='itemName'>{item.name}</p></div>
-          <div><p className='itemCost'>${item.cost}</p></div>
-          <div id="cancel"><p className="xtocancel" onClick={() => this.delete(item.key)}>X</p></div>
+          <div style={{ paddingRight: '30px' }}><p className='itemName'>{item.name}</p></div>
+          <div style={{ paddingRight: '30px' }}><p className='itemCost'>${item.cost}</p></div>
+          <div id="cancel"><p className="xtocancel" onClick={() => this.delete(item.key, item.category, item.cost)}>X</p></div>
         </li>
       </div>
     )
   }
 
-  delete(key) {
-    this.props.delete(key);
+  delete(key, category, cost) {
+    console.log(cost)
+    this.props.delete(key, category, cost);
     // this.deleteItemFromDB(key);
   }
 
@@ -59,41 +60,64 @@ class BudgetItems extends React.Component {
   }
 
   render() {
-    var BudgetEntries = this.props.entries;
-    var subscriptionItems = BudgetEntries.filter(item => item.category === "Subscriptions and Recurring Expenses").map(this.createTasks);
-    var foodItems = BudgetEntries.filter(item => item.category === "Food and Dining").map(this.createTasks);
-    var housingItems = BudgetEntries.filter(item => item.category === "Housing and Utilities").map(this.createTasks);
-    var entertainmentItems = BudgetEntries.filter(item => item.category === "Entertainment and Recreation").map(this.createTasks);
-    var medicalItems = BudgetEntries.filter(item => item.category === "Medical and Healthcare").map(this.createTasks);
-    var otherItems = BudgetEntries.filter(item => item.category === "Other").map(this.createTasks);
+    let budgetEntries = this.props.entries;
+    let subscriptionEntries = [];
+    let foodEntries = [];
+    let housingEntries = [];
+    let entertainmentEntries = [];
+    let medicalEntries = [];
+    let otherEntries = [];
+    budgetEntries.forEach(item => {
+      if (item.category === "Subscriptions and Recurring Expenses") {
+        subscriptionEntries.unshift(item);
+      } else if (item.category === "Food and Dining") {
+        foodEntries.unshift(item);
+      } else if (item.category === "Housing and Utilities") {
+        housingEntries.unshift(item);
+      } else if (item.category === "Entertainment and Recreation") {
+        entertainmentEntries.unshift(item);
+      } else if (item.category === "Medical and Healthcare") {
+        medicalEntries.unshift(item);
+      } else if (item.category === "Other") {
+        otherEntries.unshift(item);
+      }
+    });
+
+    let subscriptionItems = subscriptionEntries.map(this.createTasks);
+    let foodItems = foodEntries.map(this.createTasks);
+    let housingItems = housingEntries.map(this.createTasks);
+    let entertainmentItems = entertainmentEntries.map(this.createTasks);
+    let medicalItems = medicalEntries.map(this.createTasks);
+    let otherItems = otherEntries.map(this.createTasks);
+
     return (
 
       <div id="listContainer">
         <div className="categoryLine">
           <ul className="subscriptionsList theList">
-            <h3>Subscriptions and Recurring Expenses</h3>
+            <h2>Subscriptions and Recurring Expenses<h3>Total: ${this.props.subscriptions}</h3></h2>
             {subscriptionItems}
           </ul>
           <ul className="foodList theList">
-            <h3>Food and Dining</h3>
+            <h2>Food and Dining<h3>Total: ${this.props.food}</h3></h2>
             {foodItems}
           </ul>
           <ul className="houseList theList">
-            <h3>Housing and Utilities</h3>
+            <h2>Housing and Utilities<h3>Total: ${this.props.housing}</h3></h2>
             {housingItems}
           </ul>
         </div>
         <div className="categoryLine">
           <ul className="entertainList theList">
-            <h3>Entertainment and Recreation</h3>
+            <h2>Entertainment and Recreation<h3>Total: ${this.props.entertainment}</h3></h2>
             {entertainmentItems}
           </ul>
           <ul className="medicalList theList">
-            <h3>Medical and Healthcare</h3>
+            <h2>Medical and Healthcare<h3>Total: ${this.props.medical}</h3></h2>
             {medicalItems}
           </ul>
           <ul className="otherList theList">
-            <h3>Other</h3>
+            <h2>Other<h3>Total: ${this.props.other}</h3></h2>
             {otherItems}
           </ul>
         </div>
