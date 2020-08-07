@@ -92,7 +92,6 @@ class Signup extends React.Component {
     headers.append('Accept', 'application/json');
     headers.append('Origin', 'http://127.0.0.1:3000');
 
-    var httpStatus;
     let response = await fetch('http://127.0.0.1:5000/user/new', {
       mode: 'cors',
       method: 'POST',

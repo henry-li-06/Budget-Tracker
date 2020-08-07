@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import './../styles/budgetitems.css';
 
 
@@ -22,9 +21,15 @@ class BudgetItems extends React.Component {
     return (
       <div>
         <li className="ListItem" key={item.key}>
-          <div style={{ paddingRight: '30px' }}><p className='itemName'>{item.name}</p></div>
-          <div style={{ paddingRight: '30px' }}><p className='itemCost'>${item.cost}</p></div>
-          <div id="cancel"><p className="xtocancel" onClick={() => this.delete(item.key, item.category, item.cost)}>X</p></div>
+          <div style={{ paddingRight: '30px' }}>
+            <p className='itemName'>{item.name}</p>
+          </div>
+          <div style={{ paddingRight: '30px' }}>
+            <p className='itemCost'>${item.cost}</p>
+          </div>
+          <div id="cancel">
+            <p className="xtocancel" onClick={() => this.delete(item.key, item.category, item.cost)}>X</p>
+          </div>
         </li>
       </div>
     )
@@ -33,7 +38,6 @@ class BudgetItems extends React.Component {
   delete(key, category, cost) {
     console.log(cost)
     this.props.delete(key, category, cost);
-    // this.deleteItemFromDB(key);
   }
 
   async deleteItemFromDB(key) {

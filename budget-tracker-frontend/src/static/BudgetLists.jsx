@@ -211,18 +211,16 @@ class BudgetLists extends React.Component {
 
       this.setGreatestCategory();
 
-      // });
-      // console.log(Date.now())
       this.addItemToDB(key)
       this._inputItem.value = "";
       this._inputCost.value = "";
       this._inputCategory.value = "";
       this._inputDate.value = "";
-      // console.log(itemArray);
+
 
       e.preventDefault();
 
-      // this.addItemToDB(key);
+
     }
   }
 
@@ -235,7 +233,7 @@ class BudgetLists extends React.Component {
       key: key
 
     }
-    // console.log(Date.now())
+
 
     let headers = new Headers()
     headers.append('Content-Type', 'application/json');
@@ -249,7 +247,7 @@ class BudgetLists extends React.Component {
       credentials: 'include',
       body: JSON.stringify(data)
     })
-    // console.log(response.json())
+
     if (response.status === 401) {
       this.setState({ isAuthorized: false })
     }
@@ -323,9 +321,16 @@ class BudgetLists extends React.Component {
             <div className="budgetheader">
               <form onSubmit={this.addItem}>
                 <label>Enter budget item:  </label>
-                <input id="itemInput" ref={(a) => this._inputItem = a} placeholder="Enter Item">
+                <input
+                  id="itemInput"
+                  ref={(a) => this._inputItem = a}
+                  placeholder="Enter Item">
                 </input>
-                <input type="number" step="0.01" ref={(a) => this._inputCost = a} placeholder="Enter Amount">
+                <input
+                  type="number"
+                  step="0.01"
+                  ref={(a) => this._inputCost = a}
+                  placeholder="Enter Amount">
                 </input>
                 <label>Choose a Category:  </label>
                 <select id="categorysel" ref={(a) => this._inputCategory = a}>
