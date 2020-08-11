@@ -22,7 +22,7 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
 
     return decorated
-
+    
 
 def refresh_token_required(f):
     @wraps(f)
@@ -52,7 +52,7 @@ def generate_access_token(user_public_id):
 
 
 def generate_refresh_token(user_public_id):
-    refresh_token = jwt.encode({
+    refresh_token = jwt.encode({:
         'public_id' : user_public_id,
         'exp' : datetime.utcnow() + timedelta(weeks = app.config['REFRESH_TOKEN_DURATION'])
     }, app.config['REFRESH_SECRET_KEY'])
@@ -89,7 +89,8 @@ def verify_refresh_token(token):
         user_public_id = data['public_id']
         db_refresh_token = RefreshToken.query.filter_by(user_public_id = user_public_id).first()
 
-        if(db_refresh_token and db_refresh_token.is_valid and db_refresh_token.expiration_date > datetime.utcnow()):
+        if(db_refresh_token and db_refresh_token.is_valid and \
+            db_refresh_token.expiration_date > datetime.utcnow()):
             return user_public_id
     except:
         pass

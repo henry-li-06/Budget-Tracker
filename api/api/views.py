@@ -1,5 +1,5 @@
 from api import app, db, bcrypt
-from .models import User, BudgetItem, RefreshToken # , Category
+from .models import User, BudgetItem, RefreshToken
 from api.utils.auth import *
 from api.utils import validate_new_user
 
@@ -154,7 +154,6 @@ def delete_budget_item(current_user):
 @refresh_token_required
 def get_new_access_token(current_user):
     new_access_token = generate_access_token(current_user.public_id)
-    new_access_token = generate_access_token(user_public_id)
     res = make_response({ 'message' : 'New access token granted!' })
     res.set_cookie('x-access-token', value = new_access_token, httponly = True, expires = \
                 datetime.utcnow() + timedelta(minutes = 30), samesite = None)
@@ -162,8 +161,15 @@ def get_new_access_token(current_user):
 
 
 @app.route('/user/login/logout')
-def logout():
-    pass
+@refresh_token_required
+def logout(current_user):
+    try:
+        refresh_token = RefreshToken.query.filter_by(user_public_id = current_user.public_id).first()
+        refresh_token.is_valid = False
+        db.session.commit()
+        return { 'message' : 'Some message' }
+    except:
+        return { 'message' : 'There was an issue logging out' }, 500 # this shouldn't ever happen 
 
 @app.after_request
 def add_cors_headers(response):
