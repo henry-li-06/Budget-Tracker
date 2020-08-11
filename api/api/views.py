@@ -34,7 +34,7 @@ def new_user(data):
         res.set_cookie('x-access-token', value = access_token, httponly = True, samesite = \
             None, expires = datetime.utcnow() + timedelta(minutes = 30))
         res.set_cookie('x-refresh-token', value = refresh_token, httponly = True, samesite = \
-            None, expires = datetime.utcnow() + timedelta(weeks = 2), path = '/user/login/refresh')
+            None, expires = datetime.utcnow() + timedelta(weeks = 2), path = '/user/login/')
         return res, 201
     except:
         return { 'message' : 'There was an issue creating a new user!' }, 400
@@ -59,7 +59,7 @@ def login():
             res.set_cookie('x-access-token', value = access_token, httponly = True, samesite = \
                 None, expires = datetime.utcnow() + timedelta(minutes = 30))
             res.set_cookie('x-refresh-token', value = refresh_token, httponly = True, samesite = \
-                None, expires = datetime.utcnow() + timedelta(weeks = 2), path = '/user/login/refresh')
+                None, expires = datetime.utcnow() + timedelta(weeks = 2), path = '/user/login/')
 
             return res, 200
     
@@ -151,22 +151,19 @@ def delete_budget_item(current_user):
 
 
 @app.route('/user/login/refresh', methods = ['GET'])
-def get_new_access_token():
-    refresh_token = request.cookeis.get('x-refresh-token')
-    if(refresh_token):
-        user_public_id = verify_refresh_token(refresh_token)
-        if(user_public_id):
-            
-            new_access_token = generate_access_token(user_public_id)
-            res = make_response({ 'message' : 'New access token granted!' })
-            res.set_cookie('x-access-token', value = new_access_token, httponly = True, expires = \
-                    datetime.utcnow() + timedelta(minutes = 30), samesite = None)
-            return res, 200
-        else:
-            return { 'message' : 'Refresh token is invalid!' }, 401
-    
-    return { 'message' : 'No refresh token found!' }, 401
+@refresh_token_required
+def get_new_access_token(current_user):
+    new_access_token = generate_access_token(current_user.public_id)
+    new_access_token = generate_access_token(user_public_id)
+    res = make_response({ 'message' : 'New access token granted!' })
+    res.set_cookie('x-access-token', value = new_access_token, httponly = True, expires = \
+                datetime.utcnow() + timedelta(minutes = 30), samesite = None)
+    return res, 200
 
+
+@app.route('/user/login/logout')
+def logout():
+    pass
 
 @app.after_request
 def add_cors_headers(response):

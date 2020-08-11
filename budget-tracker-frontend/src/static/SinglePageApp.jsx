@@ -36,7 +36,7 @@ class SinglePageApp extends React.Component {
             <Route path="/about" component={About} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path='/tracker' component={BudgetLists}></Route>
+            <Route path="/tracker" component={BudgetLists}></Route>
 
           </div>
 
