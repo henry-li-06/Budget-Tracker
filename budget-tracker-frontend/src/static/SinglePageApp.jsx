@@ -10,6 +10,7 @@ import About from "./About.jsx";
 import Login from "./Login.jsx";
 import Signup from "./Signup.jsx"
 import BudgetLists from './BudgetLists.jsx';
+import img from './../images/budgettrackerimage.png'
 
 class SinglePageApp extends React.Component {
 
@@ -21,7 +22,7 @@ class SinglePageApp extends React.Component {
             <div className="container">
               <section id="navbar">
                 <ul id="list">
-                  <li id="heading">Budget Tracker</li>
+                  <li id="heading"><img src={img} alt='Budget Tracker' style={{ height: '40px' }} /> Budget Tracker</li>
                   <li className="link"><NavLink exact to='/'>Home</NavLink></li>
                   <li className="link"><NavLink to='/about'>About</NavLink></li>
                   <li className="link"><NavLink to='/login'>Log in</NavLink></li>
