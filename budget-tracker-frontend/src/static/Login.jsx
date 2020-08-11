@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
 import './../styles/login.css';
+import Header from './Header'
 
 class Login extends React.Component {
 
@@ -29,6 +30,7 @@ class Login extends React.Component {
     return (
 
       <div className="container">
+        <Header page={"login"} />
         <div id="header">
           Login with existing account
         </div>

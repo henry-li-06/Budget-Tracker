@@ -1,10 +1,12 @@
 import './../styles/home.css';
 import React from 'react';
+import Header from './Header'
 
 class Home extends React.Component {
   render() {
     return (
       <div id='container'>
+        <Header page={"home"} />
         <section id="main-graphic">
           <h1 className='graphics-text'>Monthly budgeting made easy</h1>
         </section>

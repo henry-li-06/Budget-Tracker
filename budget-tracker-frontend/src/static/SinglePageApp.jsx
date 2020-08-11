@@ -19,23 +19,6 @@ class SinglePageApp extends React.Component {
     return (
       <HashRouter>
         <div className="App">
-          <header className="header">
-            <div className="container">
-              <section id="navbar">
-                <HashRouter>
-                  <Route exact path = '/tracker' component = { Header }></Route>
-                  <Route exact path = '/' component = { Header }></Route>
-                </HashRouter>
-                {/* <ul id="list">
-                  <li id="heading"><img src={img} alt='Budget Tracker' style={{ height: '40px' }} /> Budget Tracker</li>
-                  <li className="link"><NavLink exact to='/'>Home</NavLink></li>
-                  <li className="link"><NavLink to='/about'>About</NavLink></li>
-                  <li className="link"><NavLink to='/login'>Log in</NavLink></li>
-                  <li className="link"><NavLink to='/signup'>Sign up</NavLink></li>
-                </ul> */}
-              </section>
-            </div>
-          </header>
           <div className="content">
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />

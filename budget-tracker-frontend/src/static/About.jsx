@@ -1,10 +1,12 @@
 import React from 'react';
 import './../styles/about.css';
+import Header from './Header'
 
 class About extends React.Component {
   render() {
     return (
       <div>
+        <Header page={"about"} />
         <h1 id='heading'>Never forget a subscription again.</h1>
         <div className='container'>
           <section id='graphic'>

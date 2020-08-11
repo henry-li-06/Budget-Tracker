@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import './../styles/login.css'
+import Header from './Header'
 
 class Signup extends React.Component {
 
@@ -30,6 +31,7 @@ class Signup extends React.Component {
 
     return (
       <div className="container">
+        <Header page={"signup"} />
         <div id="header">
           Sign up to start using the budget tracker for free!
         </div>

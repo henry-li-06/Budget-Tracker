@@ -5,7 +5,7 @@ import './../styles/budgetlists.css';
 import Dashboard from './Dashboard';
 import { v4 as uuid4 } from 'uuid';
 import { Redirect } from 'react-router-dom';
-
+import Header from './Header'
 
 class BudgetLists extends React.Component {
 
@@ -313,6 +313,7 @@ class BudgetLists extends React.Component {
     } else
       return (
         <div className="wholePage">
+          <Header page={"budget"} />
           <Dashboard
             totalCost={this.state.totalExpenses}
             totalSubCost={this.state.subExpenses}
