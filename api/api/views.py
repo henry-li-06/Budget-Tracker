@@ -160,7 +160,16 @@ def get_new_access_token(current_user):
     return res, 200
 
 
-@app.route('/user/login/logout')
+@app.route('/user/login/session', methods = ['GET'])
+@refresh_token_required
+def is_user_logged_in(current_user):
+    return {
+        'isLoggedIn' : True,
+        'name' : current_user.first_name
+    }
+
+
+@app.route('/user/login/logout', methods = ['DELETE'])
 @refresh_token_required
 def logout(current_user):
     try:

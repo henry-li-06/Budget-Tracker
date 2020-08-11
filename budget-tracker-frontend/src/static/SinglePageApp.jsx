@@ -10,7 +10,8 @@ import About from "./About.jsx";
 import Login from "./Login.jsx";
 import Signup from "./Signup.jsx"
 import BudgetLists from './BudgetLists.jsx';
-import img from './../images/budgettrackerimage.png'
+import img from './../images/budgettrackerimage.png';
+import Header from './Header.jsx';
 
 class SinglePageApp extends React.Component {
 
@@ -21,13 +22,17 @@ class SinglePageApp extends React.Component {
           <header className="header">
             <div className="container">
               <section id="navbar">
-                <ul id="list">
+                <HashRouter>
+                  <Route exact path = '/tracker' component = { Header }></Route>
+                  <Route exact path = '/' component = { Header }></Route>
+                </HashRouter>
+                {/* <ul id="list">
                   <li id="heading"><img src={img} alt='Budget Tracker' style={{ height: '40px' }} /> Budget Tracker</li>
                   <li className="link"><NavLink exact to='/'>Home</NavLink></li>
                   <li className="link"><NavLink to='/about'>About</NavLink></li>
                   <li className="link"><NavLink to='/login'>Log in</NavLink></li>
                   <li className="link"><NavLink to='/signup'>Sign up</NavLink></li>
-                </ul>
+                </ul> */}
               </section>
             </div>
           </header>

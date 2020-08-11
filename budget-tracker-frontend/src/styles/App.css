@@ -49,6 +49,13 @@
   
 }
 
+#logout {
+  width: 8%;
+  padding: 5px;
+  font-size: 18px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 .link {
   display: inline;
   padding: 40px;

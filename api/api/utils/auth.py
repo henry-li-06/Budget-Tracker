@@ -33,9 +33,15 @@ def refresh_token_required(f):
             if(user_public_id):
                 current_user = User.query.filter_by(public_id = user_public_id).first()
             else:
-                return { 'message' : 'Some message' }, 401 # FIXME
+                return { 
+                    'message' : 'Some message',
+                    'isLoggedIn' : False
+                }, 401 # FIXME
         else:
-            return { 'message' : 'Some message' }, 401 # FIXME
+            return {
+                'message' : 'Some message',
+                'isLoggedIn' : False
+            }, 401 # FIXME
         
         return f(current_user, *args, **kwargs)
     
@@ -52,7 +58,7 @@ def generate_access_token(user_public_id):
 
 
 def generate_refresh_token(user_public_id):
-    refresh_token = jwt.encode({:
+    refresh_token = jwt.encode({
         'public_id' : user_public_id,
         'exp' : datetime.utcnow() + timedelta(weeks = app.config['REFRESH_TOKEN_DURATION'])
     }, app.config['REFRESH_SECRET_KEY'])
