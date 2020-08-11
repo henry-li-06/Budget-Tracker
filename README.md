@@ -16,7 +16,7 @@
 
 ## About The Budget Tracker
 
-<!-- Screenshot -->
+ <img src="./budget-tracker-frontend/public/budgetTrackerPreview.png" alt="preview image" width=800 >
 
 Budget Tracker is a simplistic way to enter in your monthly expenses to help you track your budget. <br />
 Entering your budget items takes a few clicks, and your entries can be easily saved. 
@@ -74,7 +74,23 @@ Visit http://127.0.0.1:3000/ (or equivalent link by your terminal) <br />
 NOTE: Do not open the app in http://localhost:3000/ 
 
 <!-- Screenshots of adding stuff -->
-
+### Steps to use the app
+1. Sign up <br />
+<br />
+<img src="./budget-tracker-frontend/public/step1.png" alt="usage image" width=800>
+<br />
+2. Enter info to add automatically saved items <br />
+<br />
+<img src="./budget-tracker-frontend/public/step2.png" alt="usage image" width=800>
+<br />
+3. Add more items, press X to remove <br />
+<br />
+<img src="./budget-tracker-frontend/public/step3.png" alt="usage image" width=800>
+<br />
+4. Log in to access your items <br />
+<br />
+<img src="./budget-tracker-frontend/public/step4.png" alt="usage image" width=800>
+<br />
 
 ## Contributing
 
