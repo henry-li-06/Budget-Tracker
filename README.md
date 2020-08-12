@@ -15,7 +15,7 @@
 
 
 ## About The Budget Tracker
-
+<br />
  <img src="./budget-tracker-frontend/public/budgetTrackerPreview.png" alt="preview image" width=800 >
 
 Budget Tracker is a simplistic way to enter in your monthly expenses to help you track your budget. <br />
@@ -27,7 +27,7 @@ Some core features:
 * Summary of expenses.
 * Log in and save items.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ### Built With
 * ReactJS
@@ -49,6 +49,7 @@ git clone https://github.com/henryli6/Budget-Tracker.git
 
 2. Install NPM packages 
 ```sh
+cd Budget-Tracker
 cd budget-tracker-frontend
 npm install
 cd .. 
@@ -105,7 +106,7 @@ Any contributions you make are **greatly appreciated**.
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information. <br/>
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Contact
 
