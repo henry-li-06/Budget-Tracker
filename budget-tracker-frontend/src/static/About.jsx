@@ -1,6 +1,8 @@
 import React from 'react';
 import './../styles/about.css';
-import Header from './Header'
+import Header from './Header';
+import aboutImage from './../images/about-image.png';
+import step3 from './../images/step3.png'
 
 class About extends React.Component {
   render() {
@@ -8,19 +10,23 @@ class About extends React.Component {
       <div>
         <Header page={"about"} />
         <h1 id='heading'>Never forget a subscription again.</h1>
-        <div className='container'>
-          <section id='graphic'>
-          </section>
-          <section id='text'>
 
-            <p className='paragraph'>Simplify the way you manage your subscriptions.</p>
-            <p className='paragraph'>Input monthly subscriptions.</p>
-            <p className='paragraph'>Enter a budget.</p>
-            <p className='paragraph'>Display renewal dates.</p>
-            <p className='paragraph'>Keep track of monthly expenses.</p>
 
-          </section>
+        <img src={step3} style={{ maxWidth: '1000px' }} />
+        <div id='text' style={{ textAlign: "center" }} >
+
+          <p className='paragraph'>Simplify the way you manage your subscriptions.</p>
+          <p className='paragraph'>Input monthly subscriptions.</p>
+          <p className='paragraph'>Keep track of total expenses.</p>
+
         </div>
+
+
+
+
+
+
+
       </div>
     )
 

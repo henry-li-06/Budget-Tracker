@@ -8,13 +8,6 @@
   width: 40%;
 }
 
-#graphic{
-  background-image: url(./../images/about-image.png);
-  min-height: 500px;
-  min-width: 500px;
-  margin-top: 2%;
-}
-
 #text {
   width: 40%;
   flex-direction: column;
@@ -28,4 +21,5 @@
 
 .paragraph {
   font-size: 25px;
+  display: inline-block;
 }
