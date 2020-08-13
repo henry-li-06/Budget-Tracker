@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BudgetItems from './BudgetItems';
 import getNewAccessToken from './../utils/utils.js';
 import './../styles/budgetlists.css';
@@ -145,12 +145,10 @@ class BudgetLists extends React.Component {
       maxCategory = "Medical and Healthcare";
     }
     if (this.state.otherExpenses > currentMax) {
-      currentMax = this.state.ptherExpenses;
+      currentMax = this.state.otherExpenses;
       maxCategory = "Other";
     }
-    this.setState({
-      greatestCategory: maxCategory
-    })
+    setGreatest(maxCategory)
   }
 
   addItem(e) {

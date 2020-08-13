@@ -1,17 +1,17 @@
 import React from 'react';
-import Home from './Home.jsx';
+import Home from './Home.js';
 import './../styles/App.css';
 import {
   Route,
   NavLink,
   HashRouter
 } from "react-router-dom";
-import About from "./About.jsx";
-import Login from "./Login.jsx";
-import Signup from "./Signup.jsx"
-import BudgetLists from './BudgetLists.jsx';
-import img from './../images/budgettrackerimage.png';
-import Header from './Header.jsx';
+import About from "./About.js";
+import Login from "./Login.js";
+import Signup from "./Signup.js"
+import BudgetLists from './BudgetLists.js';
+
+
 
 class SinglePageApp extends React.Component {
 
