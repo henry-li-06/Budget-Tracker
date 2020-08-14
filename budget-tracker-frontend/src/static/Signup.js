@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './../styles/login.css';
 import Header from './Header.js';
-
+import background from './../images/sfbackground.jpg';
 
 function Signup() {
 
@@ -15,6 +15,18 @@ function Signup() {
 
   async function handleSubmit(event) {
     event.preventDefault()
+
+    let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+
+    document.getElementById('firstNameInput').style.borderColor = firstName == '' ? 'red' : 'gray';
+    document.getElementById('lastNameInput').style.borderColor = lastName == '' ? 'red' : 'gray';
+    document.getElementById('emailInput').style.borderColor = !(emailRegex.test(email)) ? 'red' : 'gray';
+    document.getElementById('passwordInput').style.borderColor = !(passwordRegex.test(password)) ? 'red' : 'gray';
+
+    if (firstName == '' || lastName == '' || !(emailRegex.test(email)) || !(passwordRegex.test(password))) return;
+
+
 
     const data = {
       'first_name': firstName,
@@ -38,6 +50,10 @@ function Signup() {
     })
     // console.log(response.json())
     if (response.status === 201) setValidNewUser(true)
+    else {
+      let data = await response.json();
+      document.getElementById('usernameInput').style.borderColor = data.invalidUsername ? 'red' : 'gray';
+    }
   }
 
 
@@ -51,35 +67,34 @@ function Signup() {
       :
       <div className="container">
         <Header page={"signup"} />
+        <img src={background} style={{ minHeight: '100%', minWidth: '100%', position: 'fixed', top: '0', left: '0', zIndex: '-1', filter: 'brightness(50%)' }} />
         <div id="header">
           Sign up to start using the budget tracker for free!
         </div>
-        <form>
+        <form style={{ marginBottom: '2%' }}>
           <div className="loginBox">
-            <label>First name</label> <br></br>
-            <input id="firstNameInput" value={firstName} type="text" placeholder="Enter First name" onChange={e => setFirstName(e.target.value)} >
+            <label className='loginLabel'>First name</label> <br></br>
+            <input className="loginInput" id="firstNameInput" value={firstName} type="text" placeholder="Enter First name" onChange={e => setFirstName(e.target.value)} >
             </input>
-          </div>
-          <div className="loginBox">
-            <label>Last name</label> <br></br>
-            <input id="lastNameInput" value={lastName} type="text" placeholder="Enter Last name" onChange={e => setLastName(e.target.value)} >
+
+            <label className='loginLabel'>Last name</label> <br></br>
+            <input className="loginInput" id="lastNameInput" value={lastName} type="text" placeholder="Enter Last name" onChange={e => setLastName(e.target.value)} >
             </input>
-          </div>
-          <div className="loginBox">
-            <label>Email</label> <br></br>
-            <input id="emailInput" value={email} type="text" placeholder="Enter Email" onChange={e => setEmail(e.target.value)} >
+
+            <label className='loginLabel'>Email</label> <br></br>
+            <input className="loginInput" id="emailInput" value={email} type="text" placeholder="Enter Email" onChange={e => setEmail(e.target.value)} >
             </input>
-          </div>
-          <div className="loginBox">
-            <label>Username</label> <br></br>
-            <input id="usernameInput" value={username} type="text" placeholder="Enter Username" onChange={e => setUsername(e.target.value)} >
+
+            <label className='loginLabel'>Username</label> <br></br>
+            <input className="loginInput" id="usernameInput" value={username} type="text" placeholder="Enter Username" onChange={e => setUsername(e.target.value)} >
             </input>
-          </div>
-          <div className="loginBox">
-            <label>Password</label> <br></br>
-            <p>Password must be at least 8 characters, and include at least 1 upper case character, 1 lower case character, and 1 symbol.</p>
-            <input id="passwordInput" value={password} type="password" placeholder="Enter Password" onChange={e => setPassword(e.target.value)} >
+
+            <label className='loginLabel'>Password</label> <br></br>
+            <input className="loginInput" id="passwordInput" value={password} type="password" placeholder="Enter Password" onChange={e => setPassword(e.target.value)} >
             </input>
+            <p style={{ color: 'orangered', fontSize: '12px', marginTop: '1%' }}>Password must be at least 8 characters, and include an upper case character, a lower case character, and a special character.</p>
+
+
           </div>
           <button type='submit' onClick={handleSubmit}>Sign up</button>
         </form>

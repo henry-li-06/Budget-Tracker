@@ -18,7 +18,10 @@ def validate_new_user(f):
 
         user = User.query.filter_by(username = username).first()
         if(user):
-            return { 'message' : 'Username already exists!' }
+            return { 
+                'message' : 'Username already exists!',
+                'invalidUsername' : True
+            }
 
         email_regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         if(not re.fullmatch(email_regex, email)):

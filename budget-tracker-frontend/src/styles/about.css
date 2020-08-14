@@ -1,7 +1,9 @@
-.container {
+.about-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-top: 3%;
+  text-align: center;
 }
 
 #image {
@@ -9,17 +11,20 @@
 }
 
 #text {
-  width: 40%;
-  flex-direction: column;
-  margin-top: 4%; 
+  text-align: center;
+  margin-top: 5%;
 }
 
 #heading {
-  font-size: 60px;
+  font-size: 40px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .paragraph {
   font-size: 25px;
-  display: inline-block;
+  
+}
+
+#github {
+  margin-top: 3%;
 }

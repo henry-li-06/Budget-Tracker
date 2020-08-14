@@ -1,4 +1,5 @@
 from api import db
+from os import path
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -9,6 +10,7 @@ class User(db.Model):
     email = db.Column(db.String) 
     public_id = db.Column(db.String, nullable = False)
     budget_items = db.relationship('BudgetItem', backref = 'user', lazy = False)
+    is_logged_in = db.Column(db.Boolean)
 
 
 class BudgetItem(db.Model): 
@@ -52,6 +54,8 @@ class BudgetItemCategory(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     budget_item_id = db.Column(db.Integer, db.ForeignKey('budget_item.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+
+db.create_all()
 
 
 
