@@ -25,7 +25,7 @@ function About() {
       <div id="github">
         <a href='https://github.com/henryli6/Budget-Tracker' target="_blank" rel="noopener noreferrer">
           <img id='github-logo' src={github} style={{ width: '10%' }} />
-          <p className='paragraph'>View source code on Github</p>
+          <p className='paragraph' style={{ color: 'deepskyblue' }}>View source code on Github</p>
         </a>
       </div>
     </div>

@@ -163,7 +163,7 @@ def get_new_access_token(current_user):
 
     current_user.is_logged_in = True
     db.sesion.commit()
-    
+
     return res, 200
 
 

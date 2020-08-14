@@ -7,37 +7,54 @@
 #header {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   padding: 10px;
-  border-style: solid;
-  margin-top: 3%;
+  margin-top: 2%;
   margin-left: 30%;
   margin-right: 30%;
-  margin-bottom: 3%;
-  border-radius: 8px;
-  border-color: white;
   font-size: 30px;
-  color: black;
+  color: white;
 }
 
 .loginInput {
-  width: 40%;
-  
+  width: 50%;
+  margin: 1% auto 4% auto;
+  border-radius: 5px;
+  height: 2%;
+  padding: 1%;
+  border: 2px solid gray;
+}
+
+.loginLabel { 
+  color: white;
+  font-size: 20px;
+}
+
+input:focus {
+  border: 2px solid black;
 }
 
 .loginBox {
-  margin-top: 3%;
+  margin-top: 1%;
   margin-left: 30%;
   margin-right: 30%;
-  margin-bottom: 3%;
-  background: lightgrey;
   padding: 10px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#feedback {
+  margin-top: 0px;
+  color: transparent;
+  font-size: 18px;
+  display: hidden;
 }
 
 button {
   width: 10%;
   padding: 13px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  margin: 10px;
+
   font-size: 20px;
   background-color: #C6E2E9;
   border-radius: 5px;

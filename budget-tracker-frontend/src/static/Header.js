@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import img from './../images/budgettrackerimage.png';
 import './../styles/App.css';
+import background from './../images/headerbackground.png';
 
 const Header = ({ page }) => {
 
@@ -40,19 +41,18 @@ const Header = ({ page }) => {
             credentials: 'include',
             headers: headers
         })
-        // .then(response => response.json())
-        // .then(data => {
-        //     setLoggedIn(false)
-
-        // })
     }
 
 
     return (
         <header className="header">
             <div className="container">
+
                 <section id="navbar">
+
+
                     <ul id='list'>
+
                         {!isLoggedIn || page !== "budget"
                             ?
                             <>
