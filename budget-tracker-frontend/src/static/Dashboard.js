@@ -2,7 +2,14 @@ import React from 'react';
 import './../styles/dashboard.css';
 
 function Dashboard({ total, subscriptions, greatest }) {
-
+  let categoriesMap = new Map()
+  categoriesMap.set('subscriptions', 'Subscriptions and Recurring Expenses')
+  categoriesMap.set('food', 'Food and Dining')
+  categoriesMap.set('housing', 'Housing and Utilities')
+  categoriesMap.set('entertainment', 'Entertainment and Recreation')
+  categoriesMap.set('medical', 'Medical and Healthcare')
+  categoriesMap.set('other', 'Other')
+  let category = categoriesMap.get(greatest)
   return (
 
     <div id="dashboard">
@@ -16,7 +23,7 @@ function Dashboard({ total, subscriptions, greatest }) {
       </div>
       <div className="dashItem">
         Greatest Category
-    <div id="greatestCatText">{greatest}</div>
+    <div id="greatestCatText">{category}</div>
       </div>
     </div>
   )

@@ -92,7 +92,7 @@ function BudgetLists() {
       setItem('');
       setCost('');
       setInputCategory('');
-      setDate('')
+      setDate('');
 
       e.preventDefault();
     }
