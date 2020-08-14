@@ -21,12 +21,12 @@ class BudgetItem(db.Model):
     key = db.Column(db.String, nullable = False, unique = True)
 
     categories = [
-        'Subscriptions and Recurring Expenses',
-        'Food and Dining',
-        'Housing and Utilities',
-        'Entertainment and Recreation',
-        'Medical and Healthcare',
-        'Other'
+        'subscriptions',
+        'food',
+        'housing',
+        'entertainment',
+        'medical',
+        'other'
     ]
 
 class RefreshToken(db.Model):
@@ -40,12 +40,12 @@ class Category(db.Model):
     name = db.Column(db.String)
 
     categories = [
-        'Subscriptions and Recurring Expenses',
-        'Food and Dining',
-        'Housing and Utilities',
-        'Entertainment and Recreation',
-        'Medical and Healthcare',
-        'Other'
+        'subscriptions',
+        'food',
+        'housing',
+        'entertainment',
+        'medical',
+        'other'
     ]
 
 class BudgetItemCategory(db.Model):
