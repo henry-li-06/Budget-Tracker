@@ -42,8 +42,6 @@ function Login() {
         <Header page={"login"} />
         <div id="header">
           Login with existing account
-          {console.log(username)}
-          {console.log(password)}
         </div>
         <div>
           <form>

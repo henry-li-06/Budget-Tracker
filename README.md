@@ -1,5 +1,5 @@
 # Budget-Tracker
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 ## Table of Contents
 
 * [About the Budget Tracker](#about-the-budget-tracker)
@@ -27,7 +27,7 @@ Some core features:
 * Summary of expenses.
 * Log in and save items.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 
 ### Built With
 * ReactJS
@@ -74,7 +74,7 @@ To access the website: <br />
 Visit http://127.0.0.1:3000/ (or equivalent link by your terminal) <br />
 NOTE: Do not open the app in http://localhost:3000/ 
 
-<!-- Screenshots of adding stuff -->
+
 ### Steps to use the app
 1. Sign up <br />
 <br />

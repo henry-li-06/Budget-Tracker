@@ -28,7 +28,7 @@ const Header = ({ page }) => {
             .catch(error => console.log('ERROR'))
     }, [])
 
-    function handleClick() {
+    async function handleClick() {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');
@@ -40,11 +40,11 @@ const Header = ({ page }) => {
             credentials: 'include',
             headers: headers
         })
-            .then(response => response.json())
-            .then(data => {
-                setLoggedIn(false)
-                // console.log(data)
-            })
+        // .then(response => response.json())
+        // .then(data => {
+        //     setLoggedIn(false)
+
+        // })
     }
 
 
@@ -53,7 +53,7 @@ const Header = ({ page }) => {
             <div className="container">
                 <section id="navbar">
                     <ul id='list'>
-                        {!isLoggedIn || page != "budget"
+                        {!isLoggedIn || page !== "budget"
                             ?
                             <>
                                 <li id="heading"><img src={img} alt='Budget Tracker' style={{ height: '40px' }} /> Budget Tracker</li>
@@ -66,7 +66,7 @@ const Header = ({ page }) => {
                             <>
                                 <li id="heading"><img src={img} alt='Budget Tracker' style={{ height: '40px' }} /> Budget Tracker</li>
                                 <li>Hi, {name}</li>
-                                <li><button id='logout' onClick={handleClick}>Log Out</button></li>
+                                <li><NavLink to='login' ><button id='logout' onClick={handleClick}>Log Out</button></NavLink></li>
                             </>
                         }
 

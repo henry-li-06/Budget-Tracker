@@ -23,7 +23,7 @@ def new_user(data):
     
     hashed_password = bcrypt.generate_password_hash(password)
     new_user = User(first_name = first_name, last_name = last_name, username = username, \
-        password = hashed_password, email = email, public_id = public_id)
+        password = hashed_password, email = email, public_id = public_id, is_logged_in = True)
     try:
         db.session.add(new_user)
         db.session.commit()
@@ -60,6 +60,9 @@ def login():
                 None, expires = datetime.utcnow() + timedelta(minutes = 30))
             res.set_cookie('x-refresh-token', value = refresh_token, httponly = True, samesite = \
                 None, expires = datetime.utcnow() + timedelta(weeks = 2), path = '/user/login/')
+
+            user.is_logged_in = True
+            db.session.commit()
 
             return res, 200
     
@@ -157,6 +160,10 @@ def get_new_access_token(current_user):
     res = make_response({ 'message' : 'New access token granted!' })
     res.set_cookie('x-access-token', value = new_access_token, httponly = True, expires = \
                 datetime.utcnow() + timedelta(minutes = 30), samesite = None)
+
+    current_user.is_logged_in = True
+    db.sesion.commit()
+    
     return res, 200
 
 
@@ -175,6 +182,7 @@ def logout(current_user):
     try:
         refresh_token = RefreshToken.query.filter_by(user_public_id = current_user.public_id).first()
         refresh_token.is_valid = False
+        current_user.is_logged_in = False
         db.session.commit()
         return { 'message' : 'Some message' }
     except:

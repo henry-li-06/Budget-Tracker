@@ -14,6 +14,8 @@ def token_required(f):
             user_public_id = verify_access_token(access_token)
             if(user_public_id):
                 current_user = User.query.filter_by(public_id = user_public_id).first()
+                if(not current_user.is_logged_in) :
+                    return { 'message' : 'User is logged out!' }, 401
             else:
                 return { 'message' : 'Access token is invalid!' }, 401
         else:
