@@ -77,16 +77,8 @@ function BudgetLists() {
         key: key
       });
 
-      // let totalCost = parseFloat(total) + parseFloat(cost);
       setItems(itemArray);
-      // setTotal(totalCost);
-      // setSubscriptions(inputCategory === "subscriptions" ? parseFloat(subscriptions) + parseFloat(cost) : subscriptions)
-      // setFood(inputCategory === "food" ? parseFloat(food) + parseFloat(cost) : food)
-      // setHousing(inputCategory === "housing" ? parseFloat(housing) + parseFloat(cost) : housing)
-      // setEntertainment(inputCategory === "entertainment" ? parseFloat(entertainment) + parseFloat(cost) : entertainment)
-      // setMedical(inputCategory === "medical" ? parseFloat(medical) + parseFloat(cost) : medical)
-      // setOther(inputCategory === "other" ? parseFloat(other) + parseFloat(cost) : other)
-      setGreatestCategory(itemArray);
+      setCosts(itemArray);
 
       addItemToDB(key)
       setItem('');
@@ -133,14 +125,7 @@ function BudgetLists() {
       return (item.key !== key);
     });
     setItems(filteredItems)
-    // setTotal(total - cost)
-    // setSubscriptions(category === "subscriptions" ? subscriptions - cost : subscriptions)
-    // setFood(category === "food" ? food - cost : food)
-    // setHousing(category === "housing" ? housing - cost : housing)
-    // setEntertainment(category === "entertainment" ? entertainment - cost : entertainment)
-    // setMedical(category === "medical" ? medical - cost : medical)
-    // setOther(category === "other" ? other - cost : other)
-    setGreatestCategory(filteredItems);
+    setCosts(filteredItems);
 
     const data = {
       key: key
@@ -169,7 +154,7 @@ function BudgetLists() {
   }
 
 
-  function setGreatestCategory(items) {
+  function setCosts(items) {
     let totalCost = 0.0;
     let subTotal = 0.0;
     let foodTotal = 0.0;

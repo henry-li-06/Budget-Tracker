@@ -9,7 +9,7 @@ function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isValidLogin, setValidLogin] = useState(false)
-  const [requiresFeedback, setFeedback] = useState(false)
+
 
   async function handleSubmit(event) {
     event.preventDefault();
