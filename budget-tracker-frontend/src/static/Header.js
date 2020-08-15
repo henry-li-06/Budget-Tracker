@@ -65,7 +65,7 @@ const Header = ({ page }) => {
                             :
                             <>
                                 <li id="heading"><img src={img} alt='Budget Tracker' style={{ height: '40px' }} /> Budget Tracker</li>
-                                <li>Hi, {name}</li>
+                                <li id='user-name'>Hi, {name}</li>
                                 <li><NavLink to='login' ><button id='logout' onClick={handleClick}>Log Out</button></NavLink></li>
                             </>
                         }
