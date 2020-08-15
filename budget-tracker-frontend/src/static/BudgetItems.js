@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './../styles/budgetitems.css';
-import getNewAccessToken from '../utils/utils';
 
 function BudgetItems(
   { items, deleteItem, subscriptions, food, housing, entertainment, medical, other }

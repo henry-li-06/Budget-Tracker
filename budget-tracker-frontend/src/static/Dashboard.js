@@ -9,6 +9,7 @@ function Dashboard({ total, subscriptions, greatest }) {
   categoriesMap.set('entertainment', 'Entertainment and Recreation')
   categoriesMap.set('medical', 'Medical and Healthcare')
   categoriesMap.set('other', 'Other')
+  categoriesMap.set('none', 'None')
   let category = categoriesMap.get(greatest)
   return (
 

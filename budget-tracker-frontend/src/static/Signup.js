@@ -19,12 +19,12 @@ function Signup() {
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
 
-    document.getElementById('firstNameInput').style.borderColor = firstName == '' ? 'red' : 'gray';
-    document.getElementById('lastNameInput').style.borderColor = lastName == '' ? 'red' : 'gray';
+    document.getElementById('firstNameInput').style.borderColor = firstName === '' ? 'red' : 'gray';
+    document.getElementById('lastNameInput').style.borderColor = lastName === '' ? 'red' : 'gray';
     document.getElementById('emailInput').style.borderColor = !(emailRegex.test(email)) ? 'red' : 'gray';
     document.getElementById('passwordInput').style.borderColor = !(passwordRegex.test(password)) ? 'red' : 'gray';
 
-    if (firstName == '' || lastName == '' || !(emailRegex.test(email)) || !(passwordRegex.test(password))) return;
+    if (firstName === '' || lastName === '' || !(emailRegex.test(email)) || !(passwordRegex.test(password))) return;
 
 
 

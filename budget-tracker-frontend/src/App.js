@@ -3,7 +3,6 @@ import Home from './static/Home.js';
 import './styles/App.css';
 import {
   Route,
-  NavLink,
   HashRouter
 } from 'react-router-dom';
 import About from './static/About.js';

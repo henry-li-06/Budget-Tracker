@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import img from './../images/budgettrackerimage.png';
 import './../styles/App.css';
-import background from './../images/headerbackground.png';
 
 const Header = ({ page }) => {
 

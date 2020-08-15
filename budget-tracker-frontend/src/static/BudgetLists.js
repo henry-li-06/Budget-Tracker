@@ -77,16 +77,16 @@ function BudgetLists() {
         key: key
       });
 
-      let totalCost = parseFloat(total) + parseFloat(cost);
+      // let totalCost = parseFloat(total) + parseFloat(cost);
       setItems(itemArray);
-      setTotal(totalCost);
-      setSubscriptions(inputCategory === "subscriptions" ? parseFloat(subscriptions) + parseFloat(cost) : subscriptions)
-      setFood(inputCategory === "food" ? parseFloat(food) + parseFloat(cost) : food)
-      setHousing(inputCategory === "housing" ? parseFloat(housing) + parseFloat(cost) : housing)
-      setEntertainment(inputCategory === "entertainment" ? parseFloat(entertainment) + parseFloat(cost) : entertainment)
-      setMedical(inputCategory === "medical" ? parseFloat(medical) + parseFloat(cost) : medical)
-      setOther(inputCategory === "other" ? parseFloat(other) + parseFloat(cost) : other)
-      setGreatestCategory();
+      // setTotal(totalCost);
+      // setSubscriptions(inputCategory === "subscriptions" ? parseFloat(subscriptions) + parseFloat(cost) : subscriptions)
+      // setFood(inputCategory === "food" ? parseFloat(food) + parseFloat(cost) : food)
+      // setHousing(inputCategory === "housing" ? parseFloat(housing) + parseFloat(cost) : housing)
+      // setEntertainment(inputCategory === "entertainment" ? parseFloat(entertainment) + parseFloat(cost) : entertainment)
+      // setMedical(inputCategory === "medical" ? parseFloat(medical) + parseFloat(cost) : medical)
+      // setOther(inputCategory === "other" ? parseFloat(other) + parseFloat(cost) : other)
+      setGreatestCategory(itemArray);
 
       addItemToDB(key)
       setItem('');
@@ -133,14 +133,14 @@ function BudgetLists() {
       return (item.key !== key);
     });
     setItems(filteredItems)
-    setTotal(total - cost)
-    setSubscriptions(category === "subscriptions" ? subscriptions - cost : subscriptions)
-    setFood(category === "food" ? food - cost : food)
-    setHousing(category === "housing" ? housing - cost : housing)
-    setEntertainment(category === "entertainment" ? entertainment - cost : entertainment)
-    setMedical(category === "medical" ? medical - cost : medical)
-    setOther(category === "other" ? other - cost : other)
-    setGreatestCategory();
+    // setTotal(total - cost)
+    // setSubscriptions(category === "subscriptions" ? subscriptions - cost : subscriptions)
+    // setFood(category === "food" ? food - cost : food)
+    // setHousing(category === "housing" ? housing - cost : housing)
+    // setEntertainment(category === "entertainment" ? entertainment - cost : entertainment)
+    // setMedical(category === "medical" ? medical - cost : medical)
+    // setOther(category === "other" ? other - cost : other)
+    setGreatestCategory(filteredItems);
 
     const data = {
       key: key
@@ -169,31 +169,71 @@ function BudgetLists() {
   }
 
 
-  function setGreatestCategory() {
+  function setGreatestCategory(items) {
+    let totalCost = 0.0;
+    let subTotal = 0.0;
+    let foodTotal = 0.0;
+    let housingTotal = 0.0;
+    let entertainmentTotal = 0.0;
+    let medicalTotal = 0.0;
+    let otherTotal = 0.0;
+    items.forEach(item => {
+      totalCost = parseFloat(totalCost) + parseFloat(item.cost)
+      switch (item.category) {
+        case "subscriptions":
+          subTotal = parseFloat(subTotal) + parseFloat(item.cost)
+          break;
+        case "food":
+          foodTotal = parseFloat(foodTotal) + parseFloat(item.cost)
+          break;
+        case "housing":
+          housingTotal = parseFloat(housingTotal) + parseFloat(item.cost)
+          break;
+        case "entertainment":
+          entertainmentTotal = parseFloat(entertainmentTotal) + parseFloat(item.cost)
+          break;
+        case "medical":
+          medicalTotal = parseFloat(medicalTotal) + parseFloat(item.cost)
+          break;
+        case "other":
+          otherTotal = parseFloat(otherTotal) + parseFloat(item.cost)
+          break;
+        default:
+          break;
+      }
+    })
+    setTotal(totalCost)
+    setSubscriptions(subTotal)
+    setFood(foodTotal)
+    setHousing(housingTotal)
+    setEntertainment(entertainmentTotal)
+    setMedical(medicalTotal)
+    setOther(otherTotal)
+
     let currentMax = 0;
-    let maxCategory = "None";
-    if (subscriptions > currentMax) {
-      currentMax = subscriptions;
+    let maxCategory = "none";
+    if (subTotal > currentMax) {
+      currentMax = subTotal;
       maxCategory = "subscriptions";
     }
-    if (food > currentMax) {
-      currentMax = food;
+    if (foodTotal > currentMax) {
+      currentMax = foodTotal;
       maxCategory = "food";
     }
-    if (housing > currentMax) {
-      currentMax = housing;
+    if (housingTotal > currentMax) {
+      currentMax = housingTotal;
       maxCategory = "housing";
     }
-    if (entertainment > currentMax) {
-      currentMax = entertainment;
+    if (entertainmentTotal > currentMax) {
+      currentMax = entertainmentTotal;
       maxCategory = "entertainment";
     }
-    if (medical > currentMax) {
-      currentMax = medical;
+    if (medicalTotal > currentMax) {
+      currentMax = medicalTotal;
       maxCategory = "medical";
     }
-    if (other > currentMax) {
-      currentMax = other;
+    if (otherTotal > currentMax) {
+      currentMax = otherTotal;
       maxCategory = "other";
     }
     setGreatest(maxCategory);
